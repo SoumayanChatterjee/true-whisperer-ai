@@ -170,27 +170,10 @@ const Index = () => {
             </TabsContent>
           </Tabs>
 
-          {/* Optional secondary fields */}
-          <div className="mt-6 grid gap-3 border-t border-border pt-6 md:grid-cols-2">
-            <div>
-              <label className="mb-1 block font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Optional · Source</label>
-              <Input
-                value={source}
-                onChange={(e) => setSource(e.target.value)}
-                placeholder="Add publisher to weight credibility"
-                className="h-10 bg-card font-mono text-xs"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Optional · Headline</label>
-              <Input
-                value={headline}
-                onChange={(e) => setHeadline(e.target.value)}
-                placeholder="Add headline for extra context"
-                className="h-10 bg-card text-sm"
-              />
-            </div>
-          </div>
+          <p className="mt-5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+            Tip · Switch tabs and combine inputs for the most accurate score.
+          </p>
+
 
           <Button
             onClick={analyze}
