@@ -44,16 +44,23 @@ async function fetchUrlText(url: string): Promise<{ text: string; title?: string
   }
 }
 
-const SYSTEM_PROMPT = `You are Veritas, an expert misinformation analyst trained in NLP, journalism, forensic linguistics, and source credibility analysis. 
+const SYSTEM_PROMPT = `You are Veritas, an expert misinformation analyst trained in NLP, journalism, forensic linguistics, and source credibility analysis.
 
 Analyze the provided content rigorously for signs of fake news, misinformation, propaganda, or manipulation. Consider:
 - Linguistic markers: sensationalism, emotional manipulation, loaded language, ALL-CAPS, excessive punctuation
-- Logical structure: presence of verifiable claims vs unsupported assertions
+- Logical structure: verifiable claims vs unsupported assertions
 - Source credibility: domain reputation, transparency, author attribution
 - Citation quality: links to primary sources, named experts, verifiable evidence
 - Sentiment & bias: neutral reporting vs partisan framing
 - Plausibility: extraordinary claims requiring extraordinary evidence
-- Temporal markers: recency, dateline, freshness signals
+- Narrative patterns: fear-mongering, political bias, propaganda tone, conspiracy framing, us-vs-them rhetoric, urgency manipulation
+- Headline vs body coherence: clickbait, exaggeration, misrepresentation
+- Suspicious words: emotionally loaded or manipulative tokens worth highlighting
+
+Also produce:
+- A "rewritten_neutral" version of the content stripped of bias and sensationalism (factual tone, similar length, keep verifiable facts).
+- A "truth_evolution" timeline (3-4 stages) hypothesizing how the claim likely evolved from original facts -> modified narrative -> viral/distorted version.
+- A "headline_body_mismatch" score (0=fully matches, 100=severely misleading) with explanation, only if both a headline and body exist; otherwise score 0 and note "n/a".
 
 Be calibrated, fair, and precise. Score 0 = certainly fake/manipulative, 100 = highly credible verified reporting.`;
 
@@ -120,6 +127,65 @@ const TOOL_SCHEMA = {
           items: { type: "string" },
           description: "Actions a reader should take to verify",
         },
+        radar: {
+          type: "object",
+          description: "Credibility radar metrics 0-100 (higher = better)",
+          properties: {
+            source_trust: { type: "number" },
+            language_neutrality: { type: "number" },
+            evidence_strength: { type: "number" },
+            virality_risk: { type: "number", description: "0-100, higher = MORE viral/risky (inverted)" },
+            factual_density: { type: "number" },
+          },
+          required: ["source_trust", "language_neutrality", "evidence_strength", "virality_risk", "factual_density"],
+          additionalProperties: false,
+        },
+        narrative_patterns: {
+          type: "array",
+          description: "Detected narrative/propaganda patterns",
+          items: {
+            type: "object",
+            properties: {
+              label: { type: "string", description: "Short tag e.g. 'Fear-based language'" },
+              severity: { type: "string", enum: ["low", "medium", "high"] },
+              evidence: { type: "string", description: "1-sentence why" },
+            },
+            required: ["label", "severity", "evidence"],
+            additionalProperties: false,
+          },
+        },
+        suspicious_words: {
+          type: "array",
+          description: "Loaded/manipulative words/phrases found in the text (lowercase, max 12)",
+          items: { type: "string" },
+        },
+        headline_body_mismatch: {
+          type: "object",
+          properties: {
+            score: { type: "number", description: "0=match, 100=severe mismatch" },
+            explanation: { type: "string" },
+          },
+          required: ["score", "explanation"],
+          additionalProperties: false,
+        },
+        rewritten_neutral: {
+          type: "string",
+          description: "Neutral, factual rewrite of the input (similar length).",
+        },
+        truth_evolution: {
+          type: "array",
+          description: "3-4 stages showing how the claim may have evolved",
+          items: {
+            type: "object",
+            properties: {
+              stage: { type: "string", enum: ["origin", "modified", "amplified", "viral"] },
+              title: { type: "string" },
+              description: { type: "string" },
+            },
+            required: ["stage", "title", "description"],
+            additionalProperties: false,
+          },
+        },
       },
       required: [
         "authenticity_score",
@@ -131,6 +197,12 @@ const TOOL_SCHEMA = {
         "green_flags",
         "key_claims",
         "recommendations",
+        "radar",
+        "narrative_patterns",
+        "suspicious_words",
+        "headline_body_mismatch",
+        "rewritten_neutral",
+        "truth_evolution",
       ],
       additionalProperties: false,
     },
