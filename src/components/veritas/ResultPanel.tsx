@@ -1,5 +1,10 @@
 import { motion } from "framer-motion";
-import { CheckCircle2, AlertTriangle, XCircle, Quote, ExternalLink, Lightbulb } from "lucide-react";
+import { CheckCircle2, AlertTriangle, XCircle, Quote, ExternalLink, Lightbulb, Radar as RadarIcon, Sparkles, GitMerge, Tags, AlignVerticalJustifyCenter } from "lucide-react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { CredibilityRadar, type RadarData } from "./CredibilityRadar";
+import { TruthTimeline } from "./TruthTimeline";
+import { HighlightedText } from "./HighlightedText";
 
 export type Analysis = {
   authenticity_score: number;
@@ -17,6 +22,12 @@ export type Analysis = {
   green_flags: string[];
   key_claims: { claim: string; verifiability: "verifiable" | "partially_verifiable" | "unverifiable" }[];
   recommendations: string[];
+  radar?: RadarData;
+  narrative_patterns?: { label: string; severity: "low" | "medium" | "high"; evidence: string }[];
+  suspicious_words?: string[];
+  headline_body_mismatch?: { score: number; explanation: string };
+  rewritten_neutral?: string;
+  truth_evolution?: { stage: string; title: string; description: string }[];
 };
 
 const verdictMeta = {
@@ -41,13 +52,7 @@ function ScoreRing({ score }: { score: number }) {
       <svg viewBox="0 0 160 160" className="h-full w-full -rotate-90">
         <circle cx="80" cy="80" r={r} stroke="hsl(var(--border))" strokeWidth="10" fill="none" />
         <motion.circle
-          cx="80"
-          cy="80"
-          r={r}
-          stroke="url(#g)"
-          strokeWidth="10"
-          fill="none"
-          strokeLinecap="round"
+          cx="80" cy="80" r={r} stroke="url(#g)" strokeWidth="10" fill="none" strokeLinecap="round"
           strokeDasharray={c}
           initial={{ strokeDashoffset: c }}
           animate={{ strokeDashoffset: offset }}
@@ -61,12 +66,8 @@ function ScoreRing({ score }: { score: number }) {
         </defs>
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="font-display text-5xl font-black text-ink"
-        >
+        <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
+          className="font-display text-5xl font-black text-ink">
           {Math.round(score)}
         </motion.span>
         <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">/ 100</span>
@@ -95,9 +96,28 @@ function SignalBar({ label, value }: { label: string; value: number }) {
   );
 }
 
-export function ResultPanel({ analysis, meta }: { analysis: Analysis; meta: any }) {
+const severityClasses: Record<string, string> = {
+  low: "border-success/40 bg-success/10 text-success",
+  medium: "border-warning/40 bg-warning/10 text-warning",
+  high: "border-danger/40 bg-danger/10 text-danger",
+};
+
+export function ResultPanel({
+  analysis,
+  meta,
+  originalText,
+  originalHeadline,
+}: {
+  analysis: Analysis;
+  meta: any;
+  originalText?: string;
+  originalHeadline?: string;
+}) {
   const v = verdictMeta[analysis.verdict];
   const Icon = v.icon;
+  const [showRewrite, setShowRewrite] = useState(false);
+  const suspicious = analysis.suspicious_words ?? [];
+  const mismatch = analysis.headline_body_mismatch;
 
   return (
     <article className="overflow-hidden rounded-md border border-border bg-card shadow-elevated">
@@ -117,12 +137,8 @@ export function ResultPanel({ analysis, meta }: { analysis: Analysis; meta: any 
             </h3>
             <p className="mt-4 max-w-xl text-cream/80 text-balance">{analysis.summary}</p>
             {meta?.fetched_domain && (
-              <a
-                href={meta.analyzed_url}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="mt-4 inline-flex items-center gap-1.5 font-mono text-xs text-crimson-glow hover:underline"
-              >
+              <a href={meta.analyzed_url} target="_blank" rel="noreferrer noopener"
+                className="mt-4 inline-flex items-center gap-1.5 font-mono text-xs text-crimson-glow hover:underline">
                 <ExternalLink className="h-3 w-3" />
                 {meta.fetched_domain}
               </a>
@@ -132,8 +148,18 @@ export function ResultPanel({ analysis, meta }: { analysis: Analysis; meta: any 
         </div>
       </header>
 
-      {/* Signals */}
-      <section className="grid gap-6 border-b border-border p-8 md:grid-cols-2">
+      {/* Radar + Signals */}
+      <section className="grid gap-8 border-b border-border p-8 md:grid-cols-2">
+        <div>
+          <h4 className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+            <RadarIcon className="h-3 w-3" /> Credibility radar
+          </h4>
+          {analysis.radar ? (
+            <CredibilityRadar data={analysis.radar} />
+          ) : (
+            <p className="text-sm text-muted-foreground">Radar metrics unavailable.</p>
+          )}
+        </div>
         <div className="space-y-4">
           <h4 className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Signal breakdown</h4>
           <SignalBar label="Linguistic neutrality" value={analysis.signals.linguistic_score} />
@@ -142,34 +168,144 @@ export function ResultPanel({ analysis, meta }: { analysis: Analysis; meta: any 
           <SignalBar label="Sentiment / bias" value={analysis.signals.sentiment_bias} />
           <SignalBar label="Plausibility" value={analysis.signals.plausibility} />
         </div>
-
-        <div className="grid gap-3 content-start">
-          {analysis.red_flags.length > 0 && (
-            <div className="rounded-md border border-danger/30 bg-danger/5 p-4">
-              <h5 className="mb-2 flex items-center gap-2 font-display text-sm font-bold text-danger">
-                <XCircle className="h-4 w-4" /> Red flags
-              </h5>
-              <ul className="space-y-1.5 text-sm text-ink">
-                {analysis.red_flags.map((f, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-danger">·</span>{f}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-          {analysis.green_flags.length > 0 && (
-            <div className="rounded-md border border-success/30 bg-success/5 p-4">
-              <h5 className="mb-2 flex items-center gap-2 font-display text-sm font-bold text-success">
-                <CheckCircle2 className="h-4 w-4" /> Credibility signals
-              </h5>
-              <ul className="space-y-1.5 text-sm text-ink">
-                {analysis.green_flags.map((f, i) => (
-                  <li key={i} className="flex gap-2"><span className="text-success">·</span>{f}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
       </section>
+
+      {/* Flags */}
+      <section className="grid gap-3 border-b border-border p-8 md:grid-cols-2">
+        {analysis.red_flags.length > 0 && (
+          <div className="rounded-md border border-danger/30 bg-danger/5 p-4">
+            <h5 className="mb-2 flex items-center gap-2 font-display text-sm font-bold text-danger">
+              <XCircle className="h-4 w-4" /> Red flags
+            </h5>
+            <ul className="space-y-1.5 text-sm text-ink">
+              {analysis.red_flags.map((f, i) => (
+                <li key={i} className="flex gap-2"><span className="text-danger">·</span>{f}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {analysis.green_flags.length > 0 && (
+          <div className="rounded-md border border-success/30 bg-success/5 p-4">
+            <h5 className="mb-2 flex items-center gap-2 font-display text-sm font-bold text-success">
+              <CheckCircle2 className="h-4 w-4" /> Credibility signals
+            </h5>
+            <ul className="space-y-1.5 text-sm text-ink">
+              {analysis.green_flags.map((f, i) => (
+                <li key={i} className="flex gap-2"><span className="text-success">·</span>{f}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
+
+      {/* Narrative patterns */}
+      {analysis.narrative_patterns && analysis.narrative_patterns.length > 0 && (
+        <section className="border-b border-border p-8">
+          <h4 className="mb-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+            <Tags className="h-3 w-3" /> Narrative patterns detected
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {analysis.narrative_patterns.map((p, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.05 }}
+                className={`group rounded-sm border px-3 py-2 ${severityClasses[p.severity] ?? severityClasses.medium}`}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="font-display text-sm font-bold">{p.label}</span>
+                  <span className="font-mono text-[9px] uppercase tracking-widest opacity-70">{p.severity}</span>
+                </div>
+                <p className="mt-1 text-xs opacity-90">{p.evidence}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Headline vs Body Mismatch */}
+      {mismatch && originalHeadline && originalText && (
+        <section className="border-b border-border p-8">
+          <h4 className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+            <AlignVerticalJustifyCenter className="h-3 w-3" /> Headline vs content mismatch
+          </h4>
+          <div className="flex items-center gap-4">
+            <div className="flex-1">
+              <div className="mb-1 flex justify-between font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                <span>Match</span><span>Mismatch</span>
+              </div>
+              <div className="h-2 overflow-hidden rounded-full bg-secondary">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${mismatch.score}%` }}
+                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                  className="h-full"
+                  style={{ background: scoreGradient(100 - mismatch.score) }}
+                />
+              </div>
+            </div>
+            <span className="font-display text-2xl font-black text-ink">{Math.round(mismatch.score)}</span>
+          </div>
+          <p className="mt-3 text-sm text-muted-foreground">{mismatch.explanation}</p>
+        </section>
+      )}
+
+      {/* Suspicious word highlighting */}
+      {originalText && suspicious.length > 0 && (
+        <section className="border-b border-border p-8">
+          <h4 className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+            Loaded language in your text
+          </h4>
+          <div className="rounded-md border border-border bg-paper p-4">
+            <HighlightedText
+              text={originalText.slice(0, 1200) + (originalText.length > 1200 ? "…" : "")}
+              suspicious={suspicious}
+              className="font-display text-base leading-relaxed text-ink"
+            />
+          </div>
+        </section>
+      )}
+
+      {/* Reality Rewrite */}
+      {analysis.rewritten_neutral && originalText && (
+        <section className="border-b border-border p-8">
+          <div className="mb-4 flex items-center justify-between">
+            <h4 className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+              <Sparkles className="h-3 w-3" /> Reality Rewrite Engine
+            </h4>
+            <Button size="sm" variant={showRewrite ? "default" : "outline"} onClick={() => setShowRewrite(!showRewrite)}>
+              {showRewrite ? "Hide rewrite" : "Rewrite to Truth"}
+            </Button>
+          </div>
+          {showRewrite && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="grid gap-4 md:grid-cols-2"
+            >
+              <div className="rounded-md border border-danger/30 bg-danger/5 p-4">
+                <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-danger">Original</div>
+                <p className="text-sm leading-relaxed text-ink">{originalText.slice(0, 800)}{originalText.length > 800 ? "…" : ""}</p>
+              </div>
+              <div className="rounded-md border border-success/30 bg-success/5 p-4">
+                <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-success">Neutral rewrite</div>
+                <p className="text-sm leading-relaxed text-ink">{analysis.rewritten_neutral}</p>
+              </div>
+            </motion.div>
+          )}
+        </section>
+      )}
+
+      {/* Truth Evolution Timeline */}
+      {analysis.truth_evolution && analysis.truth_evolution.length > 0 && (
+        <section className="border-b border-border p-8">
+          <h4 className="mb-5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+            <GitMerge className="h-3 w-3" /> Truth evolution timeline
+          </h4>
+          <TruthTimeline items={analysis.truth_evolution} />
+        </section>
+      )}
 
       {/* Claims */}
       {analysis.key_claims.length > 0 && (

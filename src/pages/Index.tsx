@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, ScanSearch, ShieldAlert, ShieldCheck, AlertTriangle, FileText, Link2, Newspaper, Globe, Sparkles, ArrowRight } from "lucide-react";
@@ -10,6 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import heroImg from "@/assets/hero.jpg";
 import { ResultPanel, type Analysis } from "@/components/veritas/ResultPanel";
+import { Navbar } from "@/components/veritas/Navbar";
+import { saveAnalysis } from "@/lib/history";
 
 const schema = z.object({
   text: z.string().max(20000).optional(),
@@ -25,7 +27,22 @@ const Index = () => {
   const [headline, setHeadline] = useState("");
   const [source, setSource] = useState("");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{ analysis: Analysis; meta: any } | null>(null);
+  const [result, setResult] = useState<{ analysis: Analysis; meta: any; originalText?: string; originalHeadline?: string } | null>(null);
+
+  // Prefill from Explore page
+  useEffect(() => {
+    const raw = sessionStorage.getItem("veritas:prefill");
+    if (!raw) return;
+    sessionStorage.removeItem("veritas:prefill");
+    try {
+      const p = JSON.parse(raw);
+      if (p.tab) setTab(p.tab);
+      if (p.text) setText(p.text);
+      if (p.url) setUrl(p.url);
+      if (p.headline) setHeadline(p.headline);
+      if (p.source) setSource(p.source);
+    } catch { /* ignore */ }
+  }, []);
 
   const analyze = async () => {
     const payload = {
@@ -50,7 +67,28 @@ const Index = () => {
       const { data, error } = await supabase.functions.invoke("analyze-news", { body: parsed.data });
       if (error) throw error;
       if ((data as any)?.error) throw new Error((data as any).error);
-      setResult(data as any);
+
+      const analysis = (data as any).analysis as Analysis;
+      const meta = (data as any).meta;
+      const next = {
+        analysis,
+        meta,
+        originalText: payload.text,
+        originalHeadline: payload.headline,
+      };
+      setResult(next);
+
+      // Persist to local history
+      const inputKind = (payload.text ? "text" : payload.url ? "url" : payload.headline ? "headline" : "source") as
+        "text" | "url" | "headline" | "source";
+      const inputPreview =
+        payload.text?.slice(0, 140) ||
+        payload.url ||
+        payload.headline ||
+        payload.source ||
+        "Untitled";
+      saveAnalysis({ analysis, meta, input_kind: inputKind, input_preview: inputPreview });
+
       setTimeout(() => document.getElementById("result")?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
     } catch (e: any) {
       const msg = e?.message?.includes("429")
@@ -66,6 +104,7 @@ const Index = () => {
 
   return (
     <main className="min-h-screen bg-paper">
+      <Navbar />
       {/* HERO */}
       <section className="relative overflow-hidden bg-hero text-cream">
         <div className="grain absolute inset-0 opacity-60" />
@@ -76,7 +115,7 @@ const Index = () => {
           height={1080}
           className="absolute inset-0 h-full w-full object-cover opacity-40 mix-blend-screen"
         />
-        <div className="relative mx-auto max-w-6xl px-6 pt-20 pb-28 md:pt-28 md:pb-36">
+        <div className="relative mx-auto max-w-6xl px-6 pt-16 pb-28 md:pt-24 md:pb-36">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -116,7 +155,7 @@ const Index = () => {
           <div className="mb-6 flex items-baseline justify-between border-b border-border pb-4">
             <h2 className="font-display text-2xl font-bold text-ink md:text-3xl">Run an analysis</h2>
             <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-              v1 · Gemini · NLP pipeline
+              v2 · Gemini · NLP pipeline
             </span>
           </div>
 
@@ -128,14 +167,25 @@ const Index = () => {
               <TabsTrigger value="source" className="gap-2"><Globe className="h-4 w-4" />Source</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="text" className="mt-6">
-              <label className="mb-2 block font-mono text-xs uppercase tracking-widest text-muted-foreground">Article body</label>
-              <Textarea
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="Paste the full article text here…"
-                className="min-h-[220px] resize-y border-border bg-card font-display text-base leading-relaxed"
-              />
+            <TabsContent value="text" className="mt-6 space-y-4">
+              <div>
+                <label className="mb-2 block font-mono text-xs uppercase tracking-widest text-muted-foreground">Headline (optional, enables mismatch detection)</label>
+                <Input
+                  value={headline}
+                  onChange={(e) => setHeadline(e.target.value)}
+                  placeholder="Optional: paste the headline"
+                  className="h-11 border-border bg-card font-display text-base"
+                />
+              </div>
+              <div>
+                <label className="mb-2 block font-mono text-xs uppercase tracking-widest text-muted-foreground">Article body</label>
+                <Textarea
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  placeholder="Paste the full article text here…"
+                  className="min-h-[220px] resize-y border-border bg-card font-display text-base leading-relaxed"
+                />
+              </div>
             </TabsContent>
 
             <TabsContent value="url" className="mt-6">
@@ -171,7 +221,7 @@ const Index = () => {
           </Tabs>
 
           <p className="mt-5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-            Tip · Switch tabs and combine inputs for the most accurate score.
+            Tip · Combine headline + body to unlock mismatch detection.
           </p>
 
 
@@ -182,7 +232,7 @@ const Index = () => {
             className="group mt-8 h-14 w-full bg-ink text-cream hover:bg-ink-soft"
           >
             {loading ? (
-              <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Analyzing signals…</>
+              <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Analyzing credibility…</>
             ) : (
               <>
                 <ScanSearch className="mr-2 h-5 w-5" />
@@ -198,7 +248,7 @@ const Index = () => {
                 <div className="h-full w-1/3 animate-shimmer rounded-full bg-accent/30" />
               </div>
               <p className="text-center font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                Tokenizing · Extracting claims · Cross-referencing source signals
+                Tokenizing · Extracting claims · Mapping narrative patterns · Drafting rewrite
               </p>
             </div>
           )}
@@ -216,7 +266,12 @@ const Index = () => {
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="mx-auto mt-10 max-w-4xl"
             >
-              <ResultPanel analysis={result.analysis} meta={result.meta} />
+              <ResultPanel
+                analysis={result.analysis}
+                meta={result.meta}
+                originalText={result.originalText}
+                originalHeadline={result.originalHeadline}
+              />
             </motion.div>
           )}
         </AnimatePresence>
