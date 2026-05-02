@@ -118,57 +118,6 @@ Instead of a single score:
 
 ---
 
-## 🧩 Project Structure
-
-```
-/client        → React frontend  
-/server        → Node.js backend  
-/ai-service    → Python NLP service  
-```
-
----
-
-## ⚙️ Installation & Setup
-
-### 1. Clone the Repository
-
-```
-git clone https://github.com/SoumayanChatterjee/true-whisperer-ai.git
-cd true-whisperer-ai
-```
-
----
-
-### 2. Setup Backend
-
-```
-cd server
-npm install
-npm run dev
-```
-
----
-
-### 3. Setup Frontend
-
-```
-cd client
-npm install
-npm start
-```
-
----
-
-### 4. (Optional) Run AI Service
-
-```
-cd ai-service
-pip install -r requirements.txt
-python app.py
-```
-
----
-
 ## 🧪 Demo Workflow
 
 1. Paste news text or URL
