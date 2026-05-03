@@ -106,7 +106,7 @@ const Index = () => {
     <main className="min-h-screen bg-paper">
       <Navbar />
       {/* HERO */}
-      <section className="relative overflow-hidden bg-hero text-cream">
+      <section className="relative overflow-hidden bg-hero text-cream bg-orbs">
         <div className="grain absolute inset-0 opacity-60" />
         <img
           src={heroImg}
@@ -115,32 +115,52 @@ const Index = () => {
           height={1080}
           className="absolute inset-0 h-full w-full object-cover opacity-40 mix-blend-screen"
         />
-        <div className="relative mx-auto max-w-6xl px-6 pt-16 pb-28 md:pt-24 md:pb-36">
+        {/* Animated scan line */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-crimson-glow to-transparent animate-scan" />
+        <div className="relative mx-auto max-w-6xl px-6 pt-16 pb-28 md:pt-24 md:pb-36 z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="max-w-3xl"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-cream/20 bg-cream/5 px-3 py-1 text-xs uppercase tracking-[0.2em] text-cream/80 backdrop-blur">
-              <Sparkles className="h-3 w-3 text-crimson-glow" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-cream/20 bg-cream/5 px-3 py-1 text-xs uppercase tracking-[0.2em] text-cream/80 backdrop-blur shine">
+              <Sparkles className="h-3 w-3 text-crimson-glow animate-float" />
               Misinformation intelligence
+              <span className="pulse-dot" aria-hidden />
             </div>
             <h1 className="mt-6 font-display text-5xl font-black leading-[0.95] tracking-tight text-balance md:text-7xl">
               Read the news.
               <br />
-              <span className="italic text-crimson-glow">Question</span> the source.
+              <span className="italic text-gradient">Question</span> the source.
             </h1>
             <p className="mt-6 max-w-xl text-lg text-cream/75 text-balance">
               Veritas combines NLP, source credibility heuristics and large language models
               to score articles, URLs and headlines for authenticity in seconds.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-cream/60">
-              <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-crimson-glow" /> Linguistic analysis</span>
-              <span className="flex items-center gap-2"><Globe className="h-4 w-4 text-crimson-glow" /> Source credibility</span>
-              <span className="flex items-center gap-2"><ScanSearch className="h-4 w-4 text-crimson-glow" /> Claim extraction</span>
+              <span className="flex items-center gap-2 transition-colors hover:text-crimson-glow"><ShieldCheck className="h-4 w-4 text-crimson-glow" /> Linguistic analysis</span>
+              <span className="flex items-center gap-2 transition-colors hover:text-crimson-glow"><Globe className="h-4 w-4 text-crimson-glow" /> Source credibility</span>
+              <span className="flex items-center gap-2 transition-colors hover:text-crimson-glow"><ScanSearch className="h-4 w-4 text-crimson-glow" /> Claim extraction</span>
             </div>
           </motion.div>
+        </div>
+        {/* Marquee ticker */}
+        <div className="relative z-10 border-y border-cream/10 bg-ink/40 py-3 overflow-hidden backdrop-blur-sm">
+          <div className="flex w-max animate-marquee gap-12 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.3em] text-cream/50">
+            {Array.from({ length: 2 }).map((_, k) => (
+              <div key={k} className="flex gap-12">
+                <span>● Linguistic Forensics</span>
+                <span>◆ Domain Reputation</span>
+                <span>▲ Claim Extraction</span>
+                <span>✦ Sentiment Vectors</span>
+                <span>● Headline Mismatch</span>
+                <span>◆ Narrative Patterns</span>
+                <span>▲ Reality Rewrite</span>
+                <span>✦ Truth Evolution</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -150,10 +170,10 @@ const Index = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto max-w-4xl rounded-md border border-border bg-paper p-6 shadow-elevated md:p-10"
+          className="mx-auto max-w-4xl rounded-md border border-border bg-paper p-6 shadow-elevated md:p-10 lift glow-border"
         >
           <div className="mb-6 flex items-baseline justify-between border-b border-border pb-4">
-            <h2 className="font-display text-2xl font-bold text-ink md:text-3xl">Run an analysis</h2>
+            <h2 className="font-display text-2xl font-bold text-ink md:text-3xl">Run an <span className="text-gradient">analysis</span></h2>
             <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
               v2 · Gemini · NLP pipeline
             </span>
@@ -229,13 +249,14 @@ const Index = () => {
             onClick={analyze}
             disabled={loading}
             size="lg"
-            className="group mt-8 h-14 w-full bg-ink text-cream hover:bg-ink-soft"
+            className="group shine relative mt-8 h-14 w-full overflow-hidden bg-ink text-cream hover:bg-ink-soft transition-all duration-300 hover:shadow-[0_18px_40px_-12px_hsl(var(--crimson)/0.6)]"
           >
+            <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-crimson/20 via-crimson-glow/20 to-crimson/20 opacity-0 group-hover:opacity-100 transition-opacity" />
             {loading ? (
               <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Analyzing credibility…</>
             ) : (
               <>
-                <ScanSearch className="mr-2 h-5 w-5" />
+                <ScanSearch className="mr-2 h-5 w-5 transition-transform group-hover:rotate-12" />
                 Analyze authenticity
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </>
@@ -288,9 +309,10 @@ const Index = () => {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 + i * 0.08 }}
-                className="rounded-md border border-border bg-card p-5 shadow-paper"
+                className="lift shine rounded-md border border-border bg-card p-5 shadow-paper relative overflow-hidden"
               >
-                <f.icon className="h-5 w-5 text-crimson" />
+                <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-crimson-glow/10 blur-2xl" />
+                <f.icon className="h-5 w-5 text-crimson animate-float" />
                 <h3 className="mt-3 font-display text-lg font-bold text-ink">{f.title}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{f.text}</p>
               </motion.div>
