@@ -58,6 +58,7 @@ Analyze the provided content rigorously for signs of fake news, misinformation, 
 - Suspicious words: emotionally loaded or manipulative tokens worth highlighting
 
 Also produce:
+- "signal_explanations": for EACH signal (linguistic_score, source_credibility, evidence_quality, sentiment_bias, plausibility), a 1-2 sentence rationale and 2-4 short evidence bullets quoting or citing concrete observations from the input (e.g. "Quotes 'BREAKING' and 3 exclamation marks", "Domain ap.org has high journalistic reputation", "No named sources or links to primary documents").
 - A "rewritten_neutral" version of the content stripped of bias and sensationalism (factual tone, similar length, keep verifiable facts).
 - A "truth_evolution" timeline (3-4 stages) hypothesizing how the claim likely evolved from original facts -> modified narrative -> viral/distorted version.
 - A "headline_body_mismatch" score (0=fully matches, 100=severely misleading) with explanation, only if both a headline and body exist; otherwise score 0 and note "n/a".
@@ -98,6 +99,59 @@ const TOOL_SCHEMA = {
             "sentiment_bias",
             "plausibility",
           ],
+          additionalProperties: false,
+        },
+        signal_explanations: {
+          type: "object",
+          description: "For each signal, a short rationale (1-2 sentences) and 2-4 concrete evidence bullets (quotes, observations, domain reputation notes) drawn from the input.",
+          properties: {
+            linguistic_score: {
+              type: "object",
+              properties: {
+                rationale: { type: "string" },
+                evidence: { type: "array", items: { type: "string" } },
+              },
+              required: ["rationale", "evidence"],
+              additionalProperties: false,
+            },
+            source_credibility: {
+              type: "object",
+              properties: {
+                rationale: { type: "string" },
+                evidence: { type: "array", items: { type: "string" } },
+              },
+              required: ["rationale", "evidence"],
+              additionalProperties: false,
+            },
+            evidence_quality: {
+              type: "object",
+              properties: {
+                rationale: { type: "string" },
+                evidence: { type: "array", items: { type: "string" } },
+              },
+              required: ["rationale", "evidence"],
+              additionalProperties: false,
+            },
+            sentiment_bias: {
+              type: "object",
+              properties: {
+                rationale: { type: "string" },
+                evidence: { type: "array", items: { type: "string" } },
+              },
+              required: ["rationale", "evidence"],
+              additionalProperties: false,
+            },
+            plausibility: {
+              type: "object",
+              properties: {
+                rationale: { type: "string" },
+                evidence: { type: "array", items: { type: "string" } },
+              },
+              required: ["rationale", "evidence"],
+              additionalProperties: false,
+            },
+          },
+          required: ["linguistic_score", "source_credibility", "evidence_quality", "sentiment_bias", "plausibility"],
           additionalProperties: false,
         },
         red_flags: {
@@ -193,6 +247,7 @@ const TOOL_SCHEMA = {
         "confidence",
         "summary",
         "signals",
+        "signal_explanations",
         "red_flags",
         "green_flags",
         "key_claims",

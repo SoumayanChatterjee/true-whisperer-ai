@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { CheckCircle2, AlertTriangle, XCircle, Quote, ExternalLink, Lightbulb, Radar as RadarIcon, Sparkles, GitMerge, Tags, AlignVerticalJustifyCenter } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle2, AlertTriangle, XCircle, Quote, ExternalLink, Lightbulb, Radar as RadarIcon, Sparkles, GitMerge, Tags, AlignVerticalJustifyCenter, ChevronDown, Info } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CredibilityRadar, type RadarData } from "./CredibilityRadar";
@@ -17,6 +17,13 @@ export type Analysis = {
     evidence_quality: number;
     sentiment_bias: number;
     plausibility: number;
+  };
+  signal_explanations?: {
+    linguistic_score: { rationale: string; evidence: string[] };
+    source_credibility: { rationale: string; evidence: string[] };
+    evidence_quality: { rationale: string; evidence: string[] };
+    sentiment_bias: { rationale: string; evidence: string[] };
+    plausibility: { rationale: string; evidence: string[] };
   };
   red_flags: string[];
   green_flags: string[];
@@ -76,22 +83,77 @@ function ScoreRing({ score }: { score: number }) {
   );
 }
 
-function SignalBar({ label, value }: { label: string; value: number }) {
+function SignalBar({
+  label,
+  value,
+  explanation,
+}: {
+  label: string;
+  value: number;
+  explanation?: { rationale: string; evidence: string[] };
+}) {
+  const [open, setOpen] = useState(false);
+  const hasExplain = !!explanation && (explanation.rationale || explanation.evidence?.length);
   return (
     <div>
-      <div className="mb-1 flex items-baseline justify-between">
-        <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{label}</span>
-        <span className="font-display text-sm font-bold text-ink">{Math.round(value)}</span>
-      </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-secondary">
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: `${Math.max(2, Math.min(100, value))}%` }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="h-full rounded-full"
-          style={{ background: scoreGradient(value) }}
-        />
-      </div>
+      <button
+        type="button"
+        onClick={() => hasExplain && setOpen((o) => !o)}
+        disabled={!hasExplain}
+        className={`group block w-full text-left ${hasExplain ? "cursor-pointer" : "cursor-default"}`}
+        aria-expanded={open}
+      >
+        <div className="mb-1 flex items-baseline justify-between">
+          <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+            {label}
+            {hasExplain && (
+              <ChevronDown
+                className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""} text-muted-foreground/60 group-hover:text-crimson`}
+              />
+            )}
+          </span>
+          <span className="font-display text-sm font-bold text-ink">{Math.round(value)}</span>
+        </div>
+        <div className="h-1.5 overflow-hidden rounded-full bg-secondary">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${Math.max(2, Math.min(100, value))}%` }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="h-full rounded-full"
+            style={{ background: scoreGradient(value) }}
+          />
+        </div>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && hasExplain && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="mt-3 rounded-md border border-border bg-paper/60 p-3">
+              {explanation!.rationale && (
+                <p className="flex gap-2 text-xs leading-relaxed text-ink">
+                  <Info className="mt-0.5 h-3 w-3 shrink-0 text-crimson" />
+                  <span>{explanation!.rationale}</span>
+                </p>
+              )}
+              {explanation!.evidence?.length > 0 && (
+                <ul className="mt-2 space-y-1 border-t border-border/60 pt-2">
+                  {explanation!.evidence.map((e, i) => (
+                    <li key={i} className="flex gap-2 text-xs text-muted-foreground">
+                      <span className="font-mono text-crimson">·</span>
+                      <span>{e}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -161,12 +223,17 @@ export function ResultPanel({
           )}
         </div>
         <div className="space-y-4">
-          <h4 className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Signal breakdown</h4>
-          <SignalBar label="Linguistic neutrality" value={analysis.signals.linguistic_score} />
-          <SignalBar label="Source credibility" value={analysis.signals.source_credibility} />
-          <SignalBar label="Evidence quality" value={analysis.signals.evidence_quality} />
-          <SignalBar label="Sentiment / bias" value={analysis.signals.sentiment_bias} />
-          <SignalBar label="Plausibility" value={analysis.signals.plausibility} />
+          <div className="flex items-baseline justify-between">
+            <h4 className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Signal breakdown</h4>
+            {analysis.signal_explanations && (
+              <span className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground/70">Tap a row for evidence</span>
+            )}
+          </div>
+          <SignalBar label="Linguistic neutrality" value={analysis.signals.linguistic_score} explanation={analysis.signal_explanations?.linguistic_score} />
+          <SignalBar label="Source credibility" value={analysis.signals.source_credibility} explanation={analysis.signal_explanations?.source_credibility} />
+          <SignalBar label="Evidence quality" value={analysis.signals.evidence_quality} explanation={analysis.signal_explanations?.evidence_quality} />
+          <SignalBar label="Sentiment / bias" value={analysis.signals.sentiment_bias} explanation={analysis.signal_explanations?.sentiment_bias} />
+          <SignalBar label="Plausibility" value={analysis.signals.plausibility} explanation={analysis.signal_explanations?.plausibility} />
         </div>
       </section>
 
