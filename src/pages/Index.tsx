@@ -170,10 +170,10 @@ const Index = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto max-w-4xl rounded-md border border-border bg-paper p-6 shadow-elevated md:p-10"
+          className="mx-auto max-w-4xl rounded-md border border-border bg-paper p-6 shadow-elevated md:p-10 lift glow-border"
         >
           <div className="mb-6 flex items-baseline justify-between border-b border-border pb-4">
-            <h2 className="font-display text-2xl font-bold text-ink md:text-3xl">Run an analysis</h2>
+            <h2 className="font-display text-2xl font-bold text-ink md:text-3xl">Run an <span className="text-gradient">analysis</span></h2>
             <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
               v2 · Gemini · NLP pipeline
             </span>
@@ -309,9 +309,10 @@ const Index = () => {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 + i * 0.08 }}
-                className="rounded-md border border-border bg-card p-5 shadow-paper"
+                className="lift shine rounded-md border border-border bg-card p-5 shadow-paper relative overflow-hidden"
               >
-                <f.icon className="h-5 w-5 text-crimson" />
+                <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-crimson-glow/10 blur-2xl" />
+                <f.icon className="h-5 w-5 text-crimson animate-float" />
                 <h3 className="mt-3 font-display text-lg font-bold text-ink">{f.title}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{f.text}</p>
               </motion.div>
