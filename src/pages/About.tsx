@@ -42,7 +42,7 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              className="rounded-md border border-border bg-card p-6 shadow-paper"
+              className="lift shine relative overflow-hidden rounded-md border border-border bg-card p-6 shadow-paper"
             >
               <div className="flex items-center gap-3">
                 <div className="grid h-9 w-9 place-items-center rounded-sm bg-ink text-cream">

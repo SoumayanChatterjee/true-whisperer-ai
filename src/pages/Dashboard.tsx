@@ -82,7 +82,7 @@ export default function Dashboard() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
-              className="rounded-md border border-border bg-card p-5 shadow-paper"
+              className="lift shine relative overflow-hidden rounded-md border border-border bg-card p-5 shadow-paper"
             >
               <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{s.label}</div>
               <div className={`mt-2 font-display text-3xl font-black ${s.accent}`}>{s.value}</div>
@@ -103,7 +103,7 @@ export default function Dashboard() {
           <>
             {/* Charts */}
             <div className="mt-8 grid gap-6 md:grid-cols-2">
-              <div className="rounded-md border border-border bg-card p-6 shadow-paper">
+              <div className="lift shine relative overflow-hidden rounded-md border border-border bg-card p-6 shadow-paper">
                 <div className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
                   <BarChart3 className="h-3 w-3" /> Verdict distribution
                 </div>
@@ -123,7 +123,7 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="rounded-md border border-border bg-card p-6 shadow-paper">
+              <div className="lift shine relative overflow-hidden rounded-md border border-border bg-card p-6 shadow-paper">
                 <div className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
                   <BarChart3 className="h-3 w-3" /> Recent authenticity scores
                 </div>

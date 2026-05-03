@@ -79,7 +79,7 @@ export default function Explore() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
-              className={`flex flex-col rounded-md border-l-4 border bg-card p-5 shadow-paper ${c.accent}`}
+              className={`lift shine flex flex-col rounded-md border-l-4 border bg-card p-5 shadow-paper relative overflow-hidden ${c.accent}`}
             >
               <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">{c.tag}</span>
               <h3 className="mt-2 font-display text-lg font-bold text-ink leading-snug">{c.title}</h3>
