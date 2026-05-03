@@ -100,6 +100,59 @@ const TOOL_SCHEMA = {
           ],
           additionalProperties: false,
         },
+        signal_explanations: {
+          type: "object",
+          description: "For each signal, a short rationale (1-2 sentences) and 2-4 concrete evidence bullets (quotes, observations, domain reputation notes) drawn from the input.",
+          properties: {
+            linguistic_score: {
+              type: "object",
+              properties: {
+                rationale: { type: "string" },
+                evidence: { type: "array", items: { type: "string" } },
+              },
+              required: ["rationale", "evidence"],
+              additionalProperties: false,
+            },
+            source_credibility: {
+              type: "object",
+              properties: {
+                rationale: { type: "string" },
+                evidence: { type: "array", items: { type: "string" } },
+              },
+              required: ["rationale", "evidence"],
+              additionalProperties: false,
+            },
+            evidence_quality: {
+              type: "object",
+              properties: {
+                rationale: { type: "string" },
+                evidence: { type: "array", items: { type: "string" } },
+              },
+              required: ["rationale", "evidence"],
+              additionalProperties: false,
+            },
+            sentiment_bias: {
+              type: "object",
+              properties: {
+                rationale: { type: "string" },
+                evidence: { type: "array", items: { type: "string" } },
+              },
+              required: ["rationale", "evidence"],
+              additionalProperties: false,
+            },
+            plausibility: {
+              type: "object",
+              properties: {
+                rationale: { type: "string" },
+                evidence: { type: "array", items: { type: "string" } },
+              },
+              required: ["rationale", "evidence"],
+              additionalProperties: false,
+            },
+          },
+          required: ["linguistic_score", "source_credibility", "evidence_quality", "sentiment_bias", "plausibility"],
+          additionalProperties: false,
+        },
         red_flags: {
           type: "array",
           items: { type: "string" },
@@ -193,6 +246,7 @@ const TOOL_SCHEMA = {
         "confidence",
         "summary",
         "signals",
+        "signal_explanations",
         "red_flags",
         "green_flags",
         "key_claims",
