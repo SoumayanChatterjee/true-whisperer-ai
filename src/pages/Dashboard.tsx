@@ -49,11 +49,11 @@ export default function Dashboard() {
   return (
     <main className="min-h-screen bg-paper">
       <Navbar />
-      <section className="mx-auto max-w-6xl px-4 py-10 md:px-6">
-        <div className="mb-8 flex items-end justify-between">
+      <section className="relative mx-auto max-w-6xl px-4 py-10 md:px-6 bg-orbs">
+        <div className="relative z-10 mb-8 flex items-end justify-between">
           <div>
             <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Workspace</div>
-            <h1 className="mt-1 font-display text-4xl font-black text-ink md:text-5xl">Dashboard</h1>
+            <h1 className="mt-1 font-display text-4xl font-black text-ink md:text-5xl">Dash<span className="text-gradient">board</span></h1>
             <p className="mt-2 max-w-xl text-muted-foreground">
               Your past analyses, locally stored, with credibility distribution.
             </p>
