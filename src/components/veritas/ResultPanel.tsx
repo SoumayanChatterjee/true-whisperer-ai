@@ -223,12 +223,17 @@ export function ResultPanel({
           )}
         </div>
         <div className="space-y-4">
-          <h4 className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Signal breakdown</h4>
-          <SignalBar label="Linguistic neutrality" value={analysis.signals.linguistic_score} />
-          <SignalBar label="Source credibility" value={analysis.signals.source_credibility} />
-          <SignalBar label="Evidence quality" value={analysis.signals.evidence_quality} />
-          <SignalBar label="Sentiment / bias" value={analysis.signals.sentiment_bias} />
-          <SignalBar label="Plausibility" value={analysis.signals.plausibility} />
+          <div className="flex items-baseline justify-between">
+            <h4 className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Signal breakdown</h4>
+            {analysis.signal_explanations && (
+              <span className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground/70">Tap a row for evidence</span>
+            )}
+          </div>
+          <SignalBar label="Linguistic neutrality" value={analysis.signals.linguistic_score} explanation={analysis.signal_explanations?.linguistic_score} />
+          <SignalBar label="Source credibility" value={analysis.signals.source_credibility} explanation={analysis.signal_explanations?.source_credibility} />
+          <SignalBar label="Evidence quality" value={analysis.signals.evidence_quality} explanation={analysis.signal_explanations?.evidence_quality} />
+          <SignalBar label="Sentiment / bias" value={analysis.signals.sentiment_bias} explanation={analysis.signal_explanations?.sentiment_bias} />
+          <SignalBar label="Plausibility" value={analysis.signals.plausibility} explanation={analysis.signal_explanations?.plausibility} />
         </div>
       </section>
 
