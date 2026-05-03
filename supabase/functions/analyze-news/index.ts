@@ -58,6 +58,7 @@ Analyze the provided content rigorously for signs of fake news, misinformation, 
 - Suspicious words: emotionally loaded or manipulative tokens worth highlighting
 
 Also produce:
+- "signal_explanations": for EACH signal (linguistic_score, source_credibility, evidence_quality, sentiment_bias, plausibility), a 1-2 sentence rationale and 2-4 short evidence bullets quoting or citing concrete observations from the input (e.g. "Quotes 'BREAKING' and 3 exclamation marks", "Domain ap.org has high journalistic reputation", "No named sources or links to primary documents").
 - A "rewritten_neutral" version of the content stripped of bias and sensationalism (factual tone, similar length, keep verifiable facts).
 - A "truth_evolution" timeline (3-4 stages) hypothesizing how the claim likely evolved from original facts -> modified narrative -> viral/distorted version.
 - A "headline_body_mismatch" score (0=fully matches, 100=severely misleading) with explanation, only if both a headline and body exist; otherwise score 0 and note "n/a".
