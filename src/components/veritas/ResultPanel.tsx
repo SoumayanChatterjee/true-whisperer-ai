@@ -83,22 +83,77 @@ function ScoreRing({ score }: { score: number }) {
   );
 }
 
-function SignalBar({ label, value }: { label: string; value: number }) {
+function SignalBar({
+  label,
+  value,
+  explanation,
+}: {
+  label: string;
+  value: number;
+  explanation?: { rationale: string; evidence: string[] };
+}) {
+  const [open, setOpen] = useState(false);
+  const hasExplain = !!explanation && (explanation.rationale || explanation.evidence?.length);
   return (
     <div>
-      <div className="mb-1 flex items-baseline justify-between">
-        <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{label}</span>
-        <span className="font-display text-sm font-bold text-ink">{Math.round(value)}</span>
-      </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-secondary">
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: `${Math.max(2, Math.min(100, value))}%` }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="h-full rounded-full"
-          style={{ background: scoreGradient(value) }}
-        />
-      </div>
+      <button
+        type="button"
+        onClick={() => hasExplain && setOpen((o) => !o)}
+        disabled={!hasExplain}
+        className={`group block w-full text-left ${hasExplain ? "cursor-pointer" : "cursor-default"}`}
+        aria-expanded={open}
+      >
+        <div className="mb-1 flex items-baseline justify-between">
+          <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+            {label}
+            {hasExplain && (
+              <ChevronDown
+                className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""} text-muted-foreground/60 group-hover:text-crimson`}
+              />
+            )}
+          </span>
+          <span className="font-display text-sm font-bold text-ink">{Math.round(value)}</span>
+        </div>
+        <div className="h-1.5 overflow-hidden rounded-full bg-secondary">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${Math.max(2, Math.min(100, value))}%` }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="h-full rounded-full"
+            style={{ background: scoreGradient(value) }}
+          />
+        </div>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && hasExplain && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="mt-3 rounded-md border border-border bg-paper/60 p-3">
+              {explanation!.rationale && (
+                <p className="flex gap-2 text-xs leading-relaxed text-ink">
+                  <Info className="mt-0.5 h-3 w-3 shrink-0 text-crimson" />
+                  <span>{explanation!.rationale}</span>
+                </p>
+              )}
+              {explanation!.evidence?.length > 0 && (
+                <ul className="mt-2 space-y-1 border-t border-border/60 pt-2">
+                  {explanation!.evidence.map((e, i) => (
+                    <li key={i} className="flex gap-2 text-xs text-muted-foreground">
+                      <span className="font-mono text-crimson">·</span>
+                      <span>{e}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
