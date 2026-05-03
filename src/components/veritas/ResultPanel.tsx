@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { CheckCircle2, AlertTriangle, XCircle, Quote, ExternalLink, Lightbulb, Radar as RadarIcon, Sparkles, GitMerge, Tags, AlignVerticalJustifyCenter } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle2, AlertTriangle, XCircle, Quote, ExternalLink, Lightbulb, Radar as RadarIcon, Sparkles, GitMerge, Tags, AlignVerticalJustifyCenter, ChevronDown, Info } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CredibilityRadar, type RadarData } from "./CredibilityRadar";
@@ -17,6 +17,13 @@ export type Analysis = {
     evidence_quality: number;
     sentiment_bias: number;
     plausibility: number;
+  };
+  signal_explanations?: {
+    linguistic_score: { rationale: string; evidence: string[] };
+    source_credibility: { rationale: string; evidence: string[] };
+    evidence_quality: { rationale: string; evidence: string[] };
+    sentiment_bias: { rationale: string; evidence: string[] };
+    plausibility: { rationale: string; evidence: string[] };
   };
   red_flags: string[];
   green_flags: string[];
