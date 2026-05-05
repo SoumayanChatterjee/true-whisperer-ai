@@ -184,7 +184,7 @@ const Index = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto max-w-4xl rounded-md border border-border bg-paper p-6 shadow-elevated md:p-10"
+          className="glow-ring mx-auto max-w-4xl rounded-md border border-border bg-paper p-6 shadow-elevated md:p-10"
         >
           <div className="mb-6 flex items-baseline justify-between border-b border-border pb-4">
             <h2 className="font-display text-2xl font-bold text-ink md:text-3xl">Run an analysis</h2>
