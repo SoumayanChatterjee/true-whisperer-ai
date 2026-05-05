@@ -58,39 +58,45 @@ export default function Explore() {
   };
 
   return (
-    <main className="min-h-screen bg-paper">
+    <main className="min-h-screen bg-mesh">
       <Navbar />
       <section className="mx-auto max-w-6xl px-4 py-10 md:px-6">
-        <div className="mb-8">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-            <Beaker className="h-3 w-3 text-crimson" /> Demo gallery
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground pulse-glow">
+            <Beaker className="h-3 w-3 text-crimson animate-pulse" /> Demo gallery
           </div>
-          <h1 className="mt-3 font-display text-4xl font-black text-ink md:text-5xl">Explore</h1>
+          <h1 className="mt-3 font-display text-4xl font-black text-ink md:text-5xl">
+            Expl<span className="text-gradient">ore</span>
+          </h1>
           <p className="mt-2 max-w-2xl text-muted-foreground">
             Hand-picked examples showing how Veritas detects fake, mixed, and credible content.
             Click <em>Run analysis</em> to send a case to the analyzer.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {CASES.map((c, i) => (
             <motion.article
               key={c.id}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-              className={`flex flex-col rounded-md border-l-4 border bg-card p-5 shadow-paper ${c.accent}`}
+              initial={{ opacity: 0, y: 16, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: i * 0.06, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className={`tilt group relative flex flex-col overflow-hidden rounded-md border border-l-4 bg-card p-5 shadow-paper ${c.accent}`}
             >
-              <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">{c.tag}</span>
-              <h3 className="mt-2 font-display text-lg font-bold text-ink leading-snug">{c.title}</h3>
-              <p className="mt-3 line-clamp-4 text-sm text-muted-foreground">{c.body}</p>
-              <Button
-                onClick={() => tryCase(c.body)}
-                size="sm"
-                className="mt-5 self-start bg-ink text-cream hover:bg-ink-soft"
-              >
-                Run analysis <ArrowRight className="ml-1 h-4 w-4" />
-              </Button>
+              <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-crimson-glow/10 blur-2xl transition-all group-hover:bg-crimson-glow/25" />
+              <div className="relative flex flex-1 flex-col">
+                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">{c.tag}</span>
+                <h3 className="mt-2 font-display text-lg font-bold text-ink leading-snug">{c.title}</h3>
+                <p className="mt-3 line-clamp-4 text-sm text-muted-foreground">{c.body}</p>
+                <Button
+                  onClick={() => tryCase(c.body)}
+                  size="sm"
+                  className="group/btn relative mt-5 self-start overflow-hidden bg-ink text-cream hover:bg-ink-soft hover:shadow-glow"
+                >
+                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-crimson-glow/40 to-transparent transition-transform duration-700 group-hover/btn:translate-x-full" />
+                  Run analysis <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                </Button>
+              </div>
             </motion.article>
           ))}
         </div>
