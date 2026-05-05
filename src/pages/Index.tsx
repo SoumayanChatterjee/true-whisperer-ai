@@ -115,6 +115,11 @@ const Index = () => {
           height={1080}
           className="absolute inset-0 h-full w-full object-cover opacity-40 mix-blend-screen"
         />
+        {/* floating glow blobs */}
+        <div className="pointer-events-none absolute -left-20 top-10 h-80 w-80 rounded-full bg-crimson-glow/20 blur-3xl float-blob" />
+        <div className="pointer-events-none absolute right-0 top-32 h-96 w-96 rounded-full bg-accent/15 blur-3xl float-blob-slow" />
+        <div className="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl float-blob" />
+
         <div className="relative mx-auto max-w-6xl px-6 pt-16 pb-28 md:pt-24 md:pb-36">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -122,25 +127,54 @@ const Index = () => {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="max-w-3xl"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-cream/20 bg-cream/5 px-3 py-1 text-xs uppercase tracking-[0.2em] text-cream/80 backdrop-blur">
-              <Sparkles className="h-3 w-3 text-crimson-glow" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-cream/20 bg-cream/5 px-3 py-1 text-xs uppercase tracking-[0.2em] text-cream/80 backdrop-blur pulse-glow">
+              <Sparkles className="h-3 w-3 text-crimson-glow animate-pulse" />
               Misinformation intelligence
             </div>
             <h1 className="mt-6 font-display text-5xl font-black leading-[0.95] tracking-tight text-balance md:text-7xl">
               Read the news.
               <br />
-              <span className="italic text-crimson-glow">Question</span> the source.
+              <span className="italic text-gradient">Question</span> the source.
             </h1>
             <p className="mt-6 max-w-xl text-lg text-cream/75 text-balance">
               Veritas combines NLP, source credibility heuristics and large language models
               to score articles, URLs and headlines for authenticity in seconds.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-cream/60">
-              <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-crimson-glow" /> Linguistic analysis</span>
-              <span className="flex items-center gap-2"><Globe className="h-4 w-4 text-crimson-glow" /> Source credibility</span>
-              <span className="flex items-center gap-2"><ScanSearch className="h-4 w-4 text-crimson-glow" /> Claim extraction</span>
+              {[
+                { I: ShieldCheck, t: "Linguistic analysis" },
+                { I: Globe, t: "Source credibility" },
+                { I: ScanSearch, t: "Claim extraction" },
+              ].map(({ I, t }, i) => (
+                <motion.span
+                  key={t}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + i * 0.1 }}
+                  className="flex items-center gap-2 transition-colors hover:text-cream"
+                >
+                  <I className="h-4 w-4 text-crimson-glow" /> {t}
+                </motion.span>
+              ))}
             </div>
           </motion.div>
+        </div>
+
+        {/* Marquee ticker */}
+        <div className="relative overflow-hidden border-y border-cream/10 bg-ink/40 py-2.5 backdrop-blur">
+          <div className="marquee font-mono text-[10px] uppercase tracking-[0.3em] text-cream/50">
+            {Array.from({ length: 2 }).map((_, k) => (
+              <div key={k} className="flex shrink-0 items-center gap-12">
+                <span>● Live signal model</span>
+                <span>◆ Gemini 2.5 · NLP pipeline</span>
+                <span>▲ Source credibility heuristics</span>
+                <span>● Claim extraction · v2</span>
+                <span>◆ Headline-vs-body mismatch</span>
+                <span>▲ Reality rewrite engine</span>
+                <span>● Narrative pattern detection</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
