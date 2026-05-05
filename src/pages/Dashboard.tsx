@@ -47,22 +47,25 @@ export default function Dashboard() {
   }));
 
   return (
-    <main className="min-h-screen bg-paper">
+    <main className="min-h-screen bg-mesh">
       <Navbar />
-      <section className="mx-auto max-w-6xl px-4 py-10 md:px-6">
+      <section className="relative mx-auto max-w-6xl px-4 py-10 md:px-6">
         <div className="mb-8 flex items-end justify-between">
-          <div>
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
             <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Workspace</div>
-            <h1 className="mt-1 font-display text-4xl font-black text-ink md:text-5xl">Dashboard</h1>
+            <h1 className="mt-1 font-display text-4xl font-black text-ink md:text-5xl">
+              Dash<span className="text-gradient">board</span>
+            </h1>
             <p className="mt-2 max-w-xl text-muted-foreground">
               Your past analyses, locally stored, with credibility distribution.
             </p>
-          </div>
+          </motion.div>
           {history.length > 0 && (
             <Button
               variant="outline"
               size="sm"
               onClick={() => { clearHistory(); setHistory([]); }}
+              className="hover:border-danger hover:text-danger"
             >
               <Trash2 className="mr-2 h-4 w-4" /> Clear history
             </Button>
@@ -72,20 +75,31 @@ export default function Dashboard() {
         {/* Stat cards */}
         <div className="grid gap-4 md:grid-cols-4">
           {[
-            { label: "Total analyses", value: stats.total, accent: "text-ink" },
-            { label: "Likely real", value: stats.real, accent: "text-success" },
-            { label: "Mixed signals", value: stats.mixed, accent: "text-warning" },
-            { label: "Likely fake", value: stats.fake, accent: "text-danger" },
+            { label: "Total analyses", value: stats.total, accent: "text-ink", glow: "from-ink/20" },
+            { label: "Likely real", value: stats.real, accent: "text-success", glow: "from-success/30" },
+            { label: "Mixed signals", value: stats.mixed, accent: "text-warning", glow: "from-warning/30" },
+            { label: "Likely fake", value: stats.fake, accent: "text-danger", glow: "from-danger/30" },
           ].map((s, i) => (
             <motion.div
               key={s.label}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-              className="rounded-md border border-border bg-card p-5 shadow-paper"
+              initial={{ opacity: 0, y: 16, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: i * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className={`tilt relative overflow-hidden rounded-md border border-border bg-card p-5 shadow-paper`}
             >
-              <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{s.label}</div>
-              <div className={`mt-2 font-display text-3xl font-black ${s.accent}`}>{s.value}</div>
+              <div className={`absolute -right-8 -top-8 h-24 w-24 rounded-full bg-gradient-to-br ${s.glow} to-transparent blur-2xl`} />
+              <div className="relative">
+                <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{s.label}</div>
+                <motion.div
+                  key={s.value}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + i * 0.07 }}
+                  className={`mt-2 font-display text-4xl font-black ${s.accent}`}
+                >
+                  {s.value}
+                </motion.div>
+              </div>
             </motion.div>
           ))}
         </div>
