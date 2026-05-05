@@ -103,7 +103,7 @@ const Index = () => {
   };
 
   return (
-    <main className="min-h-screen bg-paper">
+    <main className="min-h-screen bg-mesh">
       <Navbar />
       {/* HERO */}
       <section className="relative overflow-hidden bg-hero text-cream">
