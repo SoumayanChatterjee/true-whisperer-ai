@@ -16,14 +16,13 @@ export default function About() {
     <main className="min-h-screen bg-paper">
       <Navbar />
 
-      <section className="relative overflow-hidden bg-hero text-cream bg-orbs">
+      <section className="relative overflow-hidden bg-hero text-cream">
         <div className="grain absolute inset-0 opacity-50" />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-crimson-glow to-transparent animate-scan" />
-        <div className="relative z-10 mx-auto max-w-4xl px-6 py-20 md:py-28">
+        <div className="relative mx-auto max-w-4xl px-6 py-20 md:py-28">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
             <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-cream/60">About Veritas</div>
             <h1 className="mt-3 font-display text-5xl font-black md:text-6xl">
-              How the system <span className="italic text-gradient">thinks</span>.
+              How the system <span className="italic text-crimson-glow">thinks</span>.
             </h1>
             <p className="mt-5 max-w-2xl text-cream/80">
               Veritas combines NLP, forensic linguistics, source-credibility heuristics and a large language model
@@ -43,7 +42,7 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              className="lift shine relative overflow-hidden rounded-md border border-border bg-card p-6 shadow-paper"
+              className="rounded-md border border-border bg-card p-6 shadow-paper"
             >
               <div className="flex items-center gap-3">
                 <div className="grid h-9 w-9 place-items-center rounded-sm bg-ink text-cream">

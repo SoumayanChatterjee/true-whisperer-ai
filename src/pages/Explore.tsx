@@ -60,12 +60,12 @@ export default function Explore() {
   return (
     <main className="min-h-screen bg-paper">
       <Navbar />
-      <section className="relative mx-auto max-w-6xl px-4 py-10 md:px-6 bg-orbs">
-        <div className="relative z-10 mb-8">
+      <section className="mx-auto max-w-6xl px-4 py-10 md:px-6">
+        <div className="mb-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-            <Beaker className="h-3 w-3 text-crimson animate-float" /> Demo gallery
+            <Beaker className="h-3 w-3 text-crimson" /> Demo gallery
           </div>
-          <h1 className="mt-3 font-display text-4xl font-black text-ink md:text-5xl">Ex<span className="text-gradient">plore</span></h1>
+          <h1 className="mt-3 font-display text-4xl font-black text-ink md:text-5xl">Explore</h1>
           <p className="mt-2 max-w-2xl text-muted-foreground">
             Hand-picked examples showing how Veritas detects fake, mixed, and credible content.
             Click <em>Run analysis</em> to send a case to the analyzer.
@@ -79,7 +79,7 @@ export default function Explore() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
-              className={`lift shine flex flex-col rounded-md border-l-4 border bg-card p-5 shadow-paper relative overflow-hidden ${c.accent}`}
+              className={`flex flex-col rounded-md border-l-4 border bg-card p-5 shadow-paper ${c.accent}`}
             >
               <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">{c.tag}</span>
               <h3 className="mt-2 font-display text-lg font-bold text-ink leading-snug">{c.title}</h3>
