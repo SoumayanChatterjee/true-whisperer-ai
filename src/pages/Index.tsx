@@ -263,13 +263,14 @@ const Index = () => {
             onClick={analyze}
             disabled={loading}
             size="lg"
-            className="group mt-8 h-14 w-full bg-ink text-cream hover:bg-ink-soft"
+            className="group relative mt-8 h-14 w-full overflow-hidden bg-ink text-cream transition-all hover:bg-ink-soft hover:shadow-glow"
           >
+            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-crimson-glow/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             {loading ? (
               <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Analyzing credibility…</>
             ) : (
               <>
-                <ScanSearch className="mr-2 h-5 w-5" />
+                <ScanSearch className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
                 Analyze authenticity
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </>
