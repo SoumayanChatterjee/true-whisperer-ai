@@ -103,7 +103,7 @@ const Index = () => {
   };
 
   return (
-    <main className="min-h-screen bg-paper">
+    <main className="min-h-screen bg-mesh">
       <Navbar />
       {/* HERO */}
       <section className="relative overflow-hidden bg-hero text-cream">
@@ -115,6 +115,11 @@ const Index = () => {
           height={1080}
           className="absolute inset-0 h-full w-full object-cover opacity-40 mix-blend-screen"
         />
+        {/* floating glow blobs */}
+        <div className="pointer-events-none absolute -left-20 top-10 h-80 w-80 rounded-full bg-crimson-glow/20 blur-3xl float-blob" />
+        <div className="pointer-events-none absolute right-0 top-32 h-96 w-96 rounded-full bg-accent/15 blur-3xl float-blob-slow" />
+        <div className="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl float-blob" />
+
         <div className="relative mx-auto max-w-6xl px-6 pt-16 pb-28 md:pt-24 md:pb-36">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -122,25 +127,54 @@ const Index = () => {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="max-w-3xl"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-cream/20 bg-cream/5 px-3 py-1 text-xs uppercase tracking-[0.2em] text-cream/80 backdrop-blur">
-              <Sparkles className="h-3 w-3 text-crimson-glow" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-cream/20 bg-cream/5 px-3 py-1 text-xs uppercase tracking-[0.2em] text-cream/80 backdrop-blur pulse-glow">
+              <Sparkles className="h-3 w-3 text-crimson-glow animate-pulse" />
               Misinformation intelligence
             </div>
             <h1 className="mt-6 font-display text-5xl font-black leading-[0.95] tracking-tight text-balance md:text-7xl">
               Read the news.
               <br />
-              <span className="italic text-crimson-glow">Question</span> the source.
+              <span className="italic text-gradient">Question</span> the source.
             </h1>
             <p className="mt-6 max-w-xl text-lg text-cream/75 text-balance">
               Veritas combines NLP, source credibility heuristics and large language models
               to score articles, URLs and headlines for authenticity in seconds.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-cream/60">
-              <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-crimson-glow" /> Linguistic analysis</span>
-              <span className="flex items-center gap-2"><Globe className="h-4 w-4 text-crimson-glow" /> Source credibility</span>
-              <span className="flex items-center gap-2"><ScanSearch className="h-4 w-4 text-crimson-glow" /> Claim extraction</span>
+              {[
+                { I: ShieldCheck, t: "Linguistic analysis" },
+                { I: Globe, t: "Source credibility" },
+                { I: ScanSearch, t: "Claim extraction" },
+              ].map(({ I, t }, i) => (
+                <motion.span
+                  key={t}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + i * 0.1 }}
+                  className="flex items-center gap-2 transition-colors hover:text-cream"
+                >
+                  <I className="h-4 w-4 text-crimson-glow" /> {t}
+                </motion.span>
+              ))}
             </div>
           </motion.div>
+        </div>
+
+        {/* Marquee ticker */}
+        <div className="relative overflow-hidden border-y border-cream/10 bg-ink/40 py-2.5 backdrop-blur">
+          <div className="marquee font-mono text-[10px] uppercase tracking-[0.3em] text-cream/50">
+            {Array.from({ length: 2 }).map((_, k) => (
+              <div key={k} className="flex shrink-0 items-center gap-12">
+                <span>● Live signal model</span>
+                <span>◆ Gemini 2.5 · NLP pipeline</span>
+                <span>▲ Source credibility heuristics</span>
+                <span>● Claim extraction · v2</span>
+                <span>◆ Headline-vs-body mismatch</span>
+                <span>▲ Reality rewrite engine</span>
+                <span>● Narrative pattern detection</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -150,7 +184,7 @@ const Index = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto max-w-4xl rounded-md border border-border bg-paper p-6 shadow-elevated md:p-10"
+          className="glow-ring mx-auto max-w-4xl rounded-md border border-border bg-paper p-6 shadow-elevated md:p-10"
         >
           <div className="mb-6 flex items-baseline justify-between border-b border-border pb-4">
             <h2 className="font-display text-2xl font-bold text-ink md:text-3xl">Run an analysis</h2>
@@ -229,13 +263,14 @@ const Index = () => {
             onClick={analyze}
             disabled={loading}
             size="lg"
-            className="group mt-8 h-14 w-full bg-ink text-cream hover:bg-ink-soft"
+            className="group relative mt-8 h-14 w-full overflow-hidden bg-ink text-cream transition-all hover:bg-ink-soft hover:shadow-glow"
           >
+            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-crimson-glow/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             {loading ? (
               <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Analyzing credibility…</>
             ) : (
               <>
-                <ScanSearch className="mr-2 h-5 w-5" />
+                <ScanSearch className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
                 Analyze authenticity
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </>
@@ -288,19 +323,25 @@ const Index = () => {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 + i * 0.08 }}
-                className="rounded-md border border-border bg-card p-5 shadow-paper"
+                className="tilt group relative overflow-hidden rounded-md border border-border bg-card p-5 shadow-paper"
               >
-                <f.icon className="h-5 w-5 text-crimson" />
-                <h3 className="mt-3 font-display text-lg font-bold text-ink">{f.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{f.text}</p>
+                <div className="absolute -right-10 -top-10 h-28 w-28 rounded-full bg-crimson-glow/10 blur-2xl transition-all group-hover:bg-crimson-glow/30" />
+                <div className="relative">
+                  <div className="inline-flex h-9 w-9 items-center justify-center rounded-sm bg-ink text-cream transition-transform group-hover:rotate-6 group-hover:scale-110">
+                    <f.icon className="h-4 w-4" />
+                  </div>
+                  <h3 className="mt-3 font-display text-lg font-bold text-ink">{f.title}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{f.text}</p>
+                </div>
               </motion.div>
             ))}
           </div>
         )}
       </section>
 
-      <footer className="border-t border-border bg-ink py-8 text-center font-mono text-xs uppercase tracking-[0.25em] text-cream/50">
-        Veritas · NLP-assisted misinformation research · Not a substitute for human verification
+      <footer className="relative overflow-hidden border-t border-border bg-ink py-10 text-center font-mono text-xs uppercase tracking-[0.25em] text-cream/60">
+        <div className="aurora opacity-40" />
+        <span className="relative">Verit<span className="text-gradient">as</span> · NLP-assisted misinformation research · Not a substitute for human verification</span>
       </footer>
     </main>
   );
