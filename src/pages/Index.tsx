@@ -339,8 +339,9 @@ const Index = () => {
         )}
       </section>
 
-      <footer className="border-t border-border bg-ink py-8 text-center font-mono text-xs uppercase tracking-[0.25em] text-cream/50">
-        Veritas · NLP-assisted misinformation research · Not a substitute for human verification
+      <footer className="relative overflow-hidden border-t border-border bg-ink py-10 text-center font-mono text-xs uppercase tracking-[0.25em] text-cream/60">
+        <div className="aurora opacity-40" />
+        <span className="relative">Verit<span className="text-gradient">as</span> · NLP-assisted misinformation research · Not a substitute for human verification</span>
       </footer>
     </main>
   );
