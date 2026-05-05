@@ -323,11 +323,16 @@ const Index = () => {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 + i * 0.08 }}
-                className="rounded-md border border-border bg-card p-5 shadow-paper"
+                className="tilt group relative overflow-hidden rounded-md border border-border bg-card p-5 shadow-paper"
               >
-                <f.icon className="h-5 w-5 text-crimson" />
-                <h3 className="mt-3 font-display text-lg font-bold text-ink">{f.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{f.text}</p>
+                <div className="absolute -right-10 -top-10 h-28 w-28 rounded-full bg-crimson-glow/10 blur-2xl transition-all group-hover:bg-crimson-glow/30" />
+                <div className="relative">
+                  <div className="inline-flex h-9 w-9 items-center justify-center rounded-sm bg-ink text-cream transition-transform group-hover:rotate-6 group-hover:scale-110">
+                    <f.icon className="h-4 w-4" />
+                  </div>
+                  <h3 className="mt-3 font-display text-lg font-bold text-ink">{f.title}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{f.text}</p>
+                </div>
               </motion.div>
             ))}
           </div>
