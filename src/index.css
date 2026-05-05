@@ -112,10 +112,131 @@
 @layer utilities {
   .bg-hero { background: var(--gradient-hero); }
   .bg-paper { background: var(--gradient-paper); }
-  .shadow-paper { box-shadow: var(--shadow-paper); }
+  .shadow-paper { box-shadow: var(--shadow-paper); transition: box-shadow .35s var(--ease-out-expo), transform .35s var(--ease-out-expo); }
+  .shadow-paper:hover { box-shadow: 0 24px 50px -28px hsl(var(--ink) / 0.45), 0 0 0 1px hsl(var(--crimson) / 0.15); transform: translateY(-3px); }
   .shadow-elevated { box-shadow: var(--shadow-elevated); }
   .shadow-glow { box-shadow: var(--shadow-glow); }
   .text-balance { text-wrap: balance; }
+
+  /* Animated gradient mesh background */
+  .bg-mesh {
+    background:
+      radial-gradient(60% 50% at 10% 10%, hsl(var(--crimson-glow) / 0.18), transparent 70%),
+      radial-gradient(50% 40% at 90% 20%, hsl(220 80% 60% / 0.14), transparent 70%),
+      radial-gradient(45% 50% at 50% 100%, hsl(var(--accent) / 0.12), transparent 70%),
+      var(--gradient-paper);
+    background-size: 200% 200%, 200% 200%, 200% 200%, 100% 100%;
+    animation: meshShift 18s ease-in-out infinite;
+  }
+  @keyframes meshShift {
+    0%, 100% { background-position: 0% 0%, 100% 0%, 50% 100%, 0 0; }
+    50% { background-position: 20% 30%, 70% 40%, 60% 80%, 0 0; }
+  }
+
+  /* Conic glow ring for cards/buttons */
+  .glow-ring {
+    position: relative;
+    isolation: isolate;
+  }
+  .glow-ring::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: conic-gradient(from var(--a, 0deg),
+      hsl(var(--crimson-glow)),
+      hsl(var(--accent)),
+      hsl(220 80% 60%),
+      hsl(var(--crimson-glow)));
+    z-index: -1;
+    filter: blur(8px);
+    opacity: 0;
+    transition: opacity .4s ease;
+    animation: spinHue 6s linear infinite;
+  }
+  .glow-ring:hover::before { opacity: .55; }
+  @property --a {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+  @keyframes spinHue {
+    to { --a: 360deg; }
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    background: linear-gradient(120deg, hsl(var(--crimson-glow)) 0%, hsl(var(--accent)) 50%, hsl(220 80% 65%) 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradShift 6s ease-in-out infinite;
+  }
+  @keyframes gradShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* Floating blobs */
+  .float-blob { animation: float 8s ease-in-out infinite; }
+  .float-blob-slow { animation: float 14s ease-in-out infinite; }
+  @keyframes float {
+    0%, 100% { transform: translate3d(0,0,0) scale(1); }
+    50% { transform: translate3d(0,-18px,0) scale(1.04); }
+  }
+
+  /* Pulsing glow */
+  .pulse-glow { animation: pulseGlow 2.4s ease-in-out infinite; }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--crimson-glow) / 0.55); }
+    50% { box-shadow: 0 0 0 12px hsl(var(--crimson-glow) / 0); }
+  }
+
+  /* Marquee */
+  .marquee {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+    animation: marquee 28s linear infinite;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* Tilt on hover */
+  .tilt { transition: transform .35s var(--ease-out-expo); transform-style: preserve-3d; }
+  .tilt:hover { transform: perspective(800px) rotateX(2deg) rotateY(-2deg) translateY(-2px); }
+
+  /* Underline sweep */
+  .sweep-link {
+    position: relative;
+  }
+  .sweep-link::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -2px;
+    height: 2px;
+    background: linear-gradient(90deg, hsl(var(--crimson)), hsl(var(--crimson-glow)));
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform .35s var(--ease-out-expo);
+  }
+  .sweep-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+  /* Aurora text overlay */
+  .aurora {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(40% 60% at 20% 30%, hsl(var(--crimson-glow) / 0.35), transparent 60%),
+      radial-gradient(35% 50% at 80% 60%, hsl(220 90% 65% / 0.28), transparent 60%),
+      radial-gradient(30% 40% at 50% 90%, hsl(var(--accent) / 0.25), transparent 60%);
+    filter: blur(40px);
+    animation: meshShift 14s ease-in-out infinite;
+    pointer-events: none;
+  }
 
   .grain::before {
     content: "";
