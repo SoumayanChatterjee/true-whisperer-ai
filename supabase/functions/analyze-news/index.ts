@@ -62,6 +62,8 @@ Also produce:
 - A "rewritten_neutral" version of the content stripped of bias and sensationalism (factual tone, similar length, keep verifiable facts).
 - A "truth_evolution" timeline (3-4 stages) hypothesizing how the claim likely evolved from original facts -> modified narrative -> viral/distorted version.
 - A "headline_body_mismatch" score (0=fully matches, 100=severely misleading) with explanation, only if both a headline and body exist; otherwise score 0 and note "n/a".
+- A "bias_tone" object capturing political_bias (-100=far left, 0=center, 100=far right) plus a label, an emotional_tone label (one of: neutral, fear, anger, hope, outrage, sadness, mockery), tone_intensity (0-100), and a 1-2 sentence rationale.
+- A "fake_reasons" object grouping the strongest "why this might be fake" signals into 3 buckets: emotional_language (array of short bullets), clickbait_patterns (array), missing_sources (array). Leave arrays empty if not applicable.
 
 Be calibrated, fair, and precise. Score 0 = certainly fake/manipulative, 100 = highly credible verified reporting.`;
 
@@ -240,6 +242,30 @@ const TOOL_SCHEMA = {
             additionalProperties: false,
           },
         },
+        bias_tone: {
+          type: "object",
+          description: "Political bias and emotional tone analysis",
+          properties: {
+            political_bias: { type: "number", description: "-100 (far left) to 100 (far right), 0 = center" },
+            political_label: { type: "string", enum: ["far_left", "left", "center_left", "center", "center_right", "right", "far_right", "unclear"] },
+            emotional_tone: { type: "string", enum: ["neutral", "fear", "anger", "hope", "outrage", "sadness", "mockery"] },
+            tone_intensity: { type: "number", description: "0-100, how strong the emotion is" },
+            rationale: { type: "string" },
+          },
+          required: ["political_bias", "political_label", "emotional_tone", "tone_intensity", "rationale"],
+          additionalProperties: false,
+        },
+        fake_reasons: {
+          type: "object",
+          description: "Why this might be fake, grouped into emotional_language, clickbait_patterns, missing_sources",
+          properties: {
+            emotional_language: { type: "array", items: { type: "string" } },
+            clickbait_patterns: { type: "array", items: { type: "string" } },
+            missing_sources: { type: "array", items: { type: "string" } },
+          },
+          required: ["emotional_language", "clickbait_patterns", "missing_sources"],
+          additionalProperties: false,
+        },
       },
       required: [
         "authenticity_score",
@@ -258,6 +284,8 @@ const TOOL_SCHEMA = {
         "headline_body_mismatch",
         "rewritten_neutral",
         "truth_evolution",
+        "bias_tone",
+        "fake_reasons",
       ],
       additionalProperties: false,
     },
