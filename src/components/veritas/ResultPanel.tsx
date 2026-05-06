@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, AlertTriangle, XCircle, Quote, ExternalLink, Lightbulb, Radar as RadarIcon, Sparkles, GitMerge, Tags, AlignVerticalJustifyCenter, ChevronDown, Info } from "lucide-react";
+import { CheckCircle2, AlertTriangle, XCircle, Quote, ExternalLink, Lightbulb, Radar as RadarIcon, Sparkles, GitMerge, Tags, AlignVerticalJustifyCenter, ChevronDown, Info, Scale, Flame, MessageSquareWarning, Link2Off, Megaphone } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CredibilityRadar, type RadarData } from "./CredibilityRadar";
