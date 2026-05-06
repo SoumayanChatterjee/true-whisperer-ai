@@ -62,6 +62,8 @@ Also produce:
 - A "rewritten_neutral" version of the content stripped of bias and sensationalism (factual tone, similar length, keep verifiable facts).
 - A "truth_evolution" timeline (3-4 stages) hypothesizing how the claim likely evolved from original facts -> modified narrative -> viral/distorted version.
 - A "headline_body_mismatch" score (0=fully matches, 100=severely misleading) with explanation, only if both a headline and body exist; otherwise score 0 and note "n/a".
+- A "bias_tone" object capturing political_bias (-100=far left, 0=center, 100=far right) plus a label, an emotional_tone label (one of: neutral, fear, anger, hope, outrage, sadness, mockery), tone_intensity (0-100), and a 1-2 sentence rationale.
+- A "fake_reasons" object grouping the strongest "why this might be fake" signals into 3 buckets: emotional_language (array of short bullets), clickbait_patterns (array), missing_sources (array). Leave arrays empty if not applicable.
 
 Be calibrated, fair, and precise. Score 0 = certainly fake/manipulative, 100 = highly credible verified reporting.`;
 
