@@ -277,6 +277,110 @@ export function ResultPanel({
         )}
       </section>
 
+      {/* Why this might be fake */}
+      {analysis.fake_reasons &&
+        (analysis.fake_reasons.emotional_language?.length ||
+          analysis.fake_reasons.clickbait_patterns?.length ||
+          analysis.fake_reasons.missing_sources?.length) > 0 && (
+          <section className="border-b border-border bg-danger/[0.03] p-8">
+            <h4 className="mb-5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+              <MessageSquareWarning className="h-3 w-3 text-danger" /> Why this might be fake
+            </h4>
+            <div className="grid gap-4 md:grid-cols-3">
+              {[
+                { key: "emotional_language", label: "Emotional language", icon: Flame, items: analysis.fake_reasons.emotional_language },
+                { key: "clickbait_patterns", label: "Clickbait patterns", icon: Megaphone, items: analysis.fake_reasons.clickbait_patterns },
+                { key: "missing_sources", label: "Lack of credible sources", icon: Link2Off, items: analysis.fake_reasons.missing_sources },
+              ].map((b, i) => {
+                const I = b.icon;
+                const empty = !b.items || b.items.length === 0;
+                return (
+                  <motion.div
+                    key={b.key}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.07 }}
+                    className={`rounded-md border p-4 ${empty ? "border-border bg-card" : "border-danger/30 bg-card"}`}
+                  >
+                    <div className="mb-2 flex items-center gap-2">
+                      <I className={`h-4 w-4 ${empty ? "text-muted-foreground" : "text-danger"}`} />
+                      <span className="font-display text-sm font-bold text-ink">{b.label}</span>
+                    </div>
+                    {empty ? (
+                      <p className="text-xs text-muted-foreground">No notable issues detected.</p>
+                    ) : (
+                      <ul className="space-y-1.5 text-sm text-ink">
+                        {b.items.map((x, j) => (
+                          <li key={j} className="flex gap-2"><span className="text-danger">·</span>{x}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </motion.div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+      {/* Bias & Tone Meter */}
+      {analysis.bias_tone && (
+        <section className="border-b border-border p-8">
+          <h4 className="mb-5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+            <Scale className="h-3 w-3" /> Bias &amp; tone meter
+          </h4>
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Political bias slider */}
+            <div className="rounded-md border border-border bg-paper p-5">
+              <div className="mb-1 flex items-baseline justify-between">
+                <span className="font-display text-sm font-bold text-ink">Political bias</span>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  {analysis.bias_tone.political_label.replace(/_/g, " ")}
+                </span>
+              </div>
+              <div className="mb-2 flex justify-between font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
+                <span>Left</span><span>Center</span><span>Right</span>
+              </div>
+              <div className="relative h-2 rounded-full" style={{ background: "linear-gradient(90deg, hsl(217 80% 55%), hsl(0 0% 70%) 50%, hsl(358 75% 50%))" }}>
+                <motion.div
+                  initial={{ left: "50%" }}
+                  animate={{ left: `${50 + Math.max(-50, Math.min(50, analysis.bias_tone.political_bias / 2))}%` }}
+                  transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-ink bg-cream shadow-elevated"
+                />
+              </div>
+              <p className="mt-4 text-xs leading-relaxed text-muted-foreground">{analysis.bias_tone.rationale}</p>
+            </div>
+
+            {/* Emotional tone */}
+            <div className="rounded-md border border-border bg-paper p-5">
+              <div className="mb-3 flex items-baseline justify-between">
+                <span className="font-display text-sm font-bold text-ink">Emotional tone</span>
+                <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-crimson">
+                  <Flame className="h-3 w-3" />
+                  {analysis.bias_tone.emotional_tone}
+                </span>
+              </div>
+              <div className="mb-1 flex justify-between font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
+                <span>Calm</span><span>Intense</span>
+              </div>
+              <div className="h-2 overflow-hidden rounded-full bg-secondary">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${Math.max(2, Math.min(100, analysis.bias_tone.tone_intensity))}%` }}
+                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                  className="h-full rounded-full"
+                  style={{ background: scoreGradient(100 - analysis.bias_tone.tone_intensity) }}
+                />
+              </div>
+              <div className="mt-3 flex items-baseline justify-between">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Intensity</span>
+                <span className="font-display text-2xl font-black text-ink">{Math.round(analysis.bias_tone.tone_intensity)}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Narrative patterns */}
       {analysis.narrative_patterns && analysis.narrative_patterns.length > 0 && (
         <section className="border-b border-border p-8">
