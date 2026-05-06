@@ -35,6 +35,18 @@ export type Analysis = {
   headline_body_mismatch?: { score: number; explanation: string };
   rewritten_neutral?: string;
   truth_evolution?: { stage: string; title: string; description: string }[];
+  bias_tone?: {
+    political_bias: number; // -100..100
+    political_label: string;
+    emotional_tone: string;
+    tone_intensity: number;
+    rationale: string;
+  };
+  fake_reasons?: {
+    emotional_language: string[];
+    clickbait_patterns: string[];
+    missing_sources: string[];
+  };
 };
 
 const verdictMeta = {
