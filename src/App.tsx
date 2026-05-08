@@ -9,7 +9,6 @@ import Explore from "./pages/Explore.tsx";
 import About from "./pages/About.tsx";
 import RewriteLab from "./pages/RewriteLab.tsx";
 import Trends from "./pages/Trends.tsx";
-import HowItWorks from "./pages/HowItWorks.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -26,7 +25,6 @@ const App = () => (
           <Route path="/explore" element={<Explore />} />
           <Route path="/rewrite-lab" element={<RewriteLab />} />
           <Route path="/trends" element={<Trends />} />
-          <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/about" element={<About />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
