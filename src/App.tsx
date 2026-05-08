@@ -9,7 +9,6 @@ import Explore from "./pages/Explore.tsx";
 import About from "./pages/About.tsx";
 import RewriteLab from "./pages/RewriteLab.tsx";
 import Trends from "./pages/Trends.tsx";
-import HowItWorks from "./pages/HowItWorks.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
