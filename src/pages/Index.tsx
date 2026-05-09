@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, ScanSearch, ShieldAlert, ShieldCheck, AlertTriangle, FileText, Link2, Newspaper, Globe, Sparkles, ArrowRight } from "lucide-react";
+import { Loader2, ScanSearch, ShieldAlert, ShieldCheck, AlertTriangle, FileText, Link2, Newspaper, Globe, Sparkles, ArrowRight, Radar, Activity, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import heroImg from "@/assets/hero.jpg";
 import { ResultPanel, type Analysis } from "@/components/veritas/ResultPanel";
 import { Navbar } from "@/components/veritas/Navbar";
 import { Footer } from "@/components/veritas/Footer";
+import { LiveIntelFeed, IntelTicker } from "@/components/veritas/LiveIntelFeed";
+import { IntelligenceLoader } from "@/components/veritas/IntelligenceLoader";
 import { saveAnalysis } from "@/lib/history";
 
 const schema = z.object({
