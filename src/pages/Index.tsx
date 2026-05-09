@@ -107,77 +107,111 @@ const Index = () => {
   return (
     <main className="min-h-screen bg-mesh">
       <Navbar />
-      {/* HERO */}
-      <section className="relative overflow-hidden bg-hero text-cream">
-        <div className="grain absolute inset-0 opacity-60" />
-        <img
-          src={heroImg}
-          alt="Newspaper fragments dissolving into data particles"
-          width={1920}
-          height={1080}
-          className="absolute inset-0 h-full w-full object-cover opacity-40 mix-blend-screen"
-        />
-        {/* floating glow blobs */}
-        <div className="pointer-events-none absolute -left-20 top-10 h-80 w-80 rounded-full bg-crimson-glow/20 blur-3xl float-blob" />
-        <div className="pointer-events-none absolute right-0 top-32 h-96 w-96 rounded-full bg-accent/15 blur-3xl float-blob-slow" />
-        <div className="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl float-blob" />
+      {/* CINEMATIC HERO — split-screen command center */}
+      <section className="relative overflow-hidden bg-hero">
+        <div className="absolute inset-0 cyber-grid opacity-60" />
+        <div className="absolute inset-0 particles opacity-50 pointer-events-none" />
+        <div className="grain absolute inset-0 opacity-50" />
+        <div className="pointer-events-none absolute -left-32 top-10 h-96 w-96 rounded-full bg-electric/20 blur-3xl float-blob" />
+        <div className="pointer-events-none absolute right-0 top-32 h-[28rem] w-[28rem] rounded-full bg-crimson-glow/15 blur-3xl float-blob-slow" />
+        <div className="pointer-events-none absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-neon/10 blur-3xl float-blob" />
+        <svg className="pointer-events-none absolute inset-0 h-full w-full opacity-30" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="line-grad" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stopColor="hsl(var(--electric))" stopOpacity="0" />
+              <stop offset="0.5" stopColor="hsl(var(--electric))" stopOpacity="0.6" />
+              <stop offset="1" stopColor="hsl(var(--crimson-glow))" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <line x1="0" y1="20%" x2="100%" y2="35%" stroke="url(#line-grad)" strokeWidth="1" />
+          <line x1="0" y1="60%" x2="100%" y2="80%" stroke="url(#line-grad)" strokeWidth="1" />
+          <line x1="20%" y1="0" x2="60%" y2="100%" stroke="url(#line-grad)" strokeWidth="0.5" />
+        </svg>
 
-        <div className="relative mx-auto max-w-6xl px-6 pt-16 pb-28 md:pt-24 md:pb-36">
+        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 pt-12 pb-20 md:px-6 md:pt-20 md:pb-28 lg:grid-cols-[1.5fr_1fr]">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-3xl"
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="relative"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-cream/20 bg-cream/5 px-3 py-1 text-xs uppercase tracking-[0.2em] text-cream/80 backdrop-blur pulse-glow">
-              <Sparkles className="h-3 w-3 text-crimson-glow animate-pulse" />
-              Misinformation intelligence
+            <div className="inline-flex items-center gap-2 rounded-sm border border-electric/30 bg-electric/5 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.28em] text-electric backdrop-blur pulse-glow">
+              <Sparkles className="h-3 w-3 animate-pulse" />
+              <span>Misinformation Intelligence Console · v2.4</span>
             </div>
-            <h1 className="mt-6 font-display text-5xl font-black leading-[0.95] tracking-tight text-balance md:text-7xl">
-              Read the news.
-              <br />
-              <span className="italic text-gradient">Question</span> the source.
+            <h1 className="mt-6 font-display text-5xl font-bold leading-[0.95] tracking-tight text-balance md:text-7xl lg:text-[5.5rem]">
+              <motion.span
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15, duration: 0.7 }}
+                className="block text-foreground"
+              >
+                Decode misinformation
+              </motion.span>
+              <motion.span
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.7 }}
+                className="block"
+              >
+                <span className="italic text-gradient">before</span>{" "}
+                <span className="text-foreground">it shapes reality.</span>
+              </motion.span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-cream/75 text-balance">
-              Veritas combines NLP, source credibility heuristics and large language models
-              to score articles, URLs and headlines for authenticity in seconds.
+            <p className="mt-6 max-w-xl text-lg text-muted-foreground text-balance">
+              An investigative AI console for journalists, researchers and the
+              terminally curious. Veritas scans sources, detects narrative
+              manipulation, and compiles an intelligence report — in seconds.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-cream/60">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               {[
-                { I: ShieldCheck, t: "Linguistic analysis" },
-                { I: Globe, t: "Source credibility" },
-                { I: ScanSearch, t: "Claim extraction" },
-              ].map(({ I, t }, i) => (
+                { I: Radar,    t: "Source scan",      c: "text-electric"     },
+                { I: Activity, t: "Narrative model",  c: "text-crimson-glow" },
+                { I: Zap,      t: "Real-time intel",  c: "text-amber"        },
+              ].map(({ I, t, c }, i) => (
                 <motion.span
                   key={t}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 + i * 0.1 }}
-                  className="flex items-center gap-2 transition-colors hover:text-cream"
+                  transition={{ delay: 0.5 + i * 0.1 }}
+                  className="group flex items-center gap-2 rounded-sm border border-border bg-card/40 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground backdrop-blur transition-all hover:-translate-y-0.5 hover:border-electric/40 hover:text-foreground"
                 >
-                  <I className="h-4 w-4 text-crimson-glow" /> {t}
+                  <I className={`h-3.5 w-3.5 ${c}`} /> {t}
                 </motion.span>
               ))}
             </div>
+
+            <div className="mt-10 grid grid-cols-3 gap-3 max-w-lg">
+              {[
+                { v: "4,217", l: "Signals / 24h", c: "text-electric" },
+                { v: "12",    l: "Critical now",  c: "text-crimson-glow" },
+                { v: "98.2%", l: "Model uptime",  c: "text-success" },
+              ].map((s, i) => (
+                <motion.div
+                  key={s.l}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 + i * 0.08 }}
+                  className="glass relative overflow-hidden rounded-sm p-3"
+                >
+                  <div className={`font-display text-2xl font-bold tabular-nums ${s.c}`}>{s.v}</div>
+                  <div className="mt-0.5 font-mono text-[9px] uppercase tracking-[0.22em] text-muted-foreground">{s.l}</div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="relative"
+          >
+            <LiveIntelFeed />
           </motion.div>
         </div>
 
-        {/* Marquee ticker */}
-        <div className="relative overflow-hidden border-y border-cream/10 bg-ink/40 py-2.5 backdrop-blur">
-          <div className="marquee font-mono text-[10px] uppercase tracking-[0.3em] text-cream/50">
-            {Array.from({ length: 2 }).map((_, k) => (
-              <div key={k} className="flex shrink-0 items-center gap-12">
-                <span>● Live signal model</span>
-                <span>◆ Gemini 2.5 · NLP pipeline</span>
-                <span>▲ Source credibility heuristics</span>
-                <span>● Claim extraction · v2</span>
-                <span>◆ Headline-vs-body mismatch</span>
-                <span>▲ Reality rewrite engine</span>
-                <span>● Narrative pattern detection</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <IntelTicker />
       </section>
 
       {/* ANALYZER */}
