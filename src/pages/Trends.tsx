@@ -41,7 +41,7 @@ export default function Trends() {
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground pulse-glow">
             <TrendingUp className="h-3 w-3 text-crimson animate-pulse" /> Live trends · simulated
           </div>
-          <h1 className="mt-3 font-display text-4xl font-black text-ink md:text-5xl">
+          <h1 className="mt-3 font-display text-4xl font-black text-foreground md:text-5xl">
             Misinformation <span className="text-gradient">trends</span>
           </h1>
           <p className="mt-2 max-w-2xl text-muted-foreground">
@@ -57,7 +57,7 @@ export default function Trends() {
           >
             <div className="mb-3 flex items-center gap-2">
               <Activity className="h-4 w-4 text-crimson" />
-              <h3 className="font-display text-lg font-bold text-ink">Detections — last 14 days</h3>
+              <h3 className="font-display text-lg font-bold text-foreground">Detections — last 14 days</h3>
             </div>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -96,7 +96,7 @@ export default function Trends() {
           >
             <div className="mb-3 flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-warning" />
-              <h3 className="font-display text-lg font-bold text-ink">By category</h3>
+              <h3 className="font-display text-lg font-bold text-foreground">By category</h3>
             </div>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -112,7 +112,7 @@ export default function Trends() {
           </motion.div>
         </div>
 
-        <h2 className="mt-10 font-display text-2xl font-bold text-ink">Trending narratives</h2>
+        <h2 className="mt-10 font-display text-2xl font-bold text-foreground">Trending narratives</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {TRENDING.map((t, i) => (
             <motion.article
@@ -130,7 +130,7 @@ export default function Trends() {
                     <Flame className="h-3 w-3" /> {t.delta}
                   </span>
                 </div>
-                <h3 className="mt-2 font-display text-lg font-bold text-ink leading-snug">{t.topic}</h3>
+                <h3 className="mt-2 font-display text-lg font-bold text-foreground leading-snug">{t.topic}</h3>
                 <div className="mt-4">
                   <div className="flex items-center justify-between font-mono text-[10px] text-muted-foreground">
                     <span>Heat</span><span>{t.heat}/100</span>

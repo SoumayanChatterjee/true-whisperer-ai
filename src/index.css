@@ -111,7 +111,7 @@
 
 @layer utilities {
   .bg-hero { background: var(--gradient-hero); }
-  .bg-paper { background: var(--gradient-paper); }
+  .bg-background { background: var(--gradient-paper); }
   .shadow-paper { box-shadow: var(--shadow-paper); transition: box-shadow .35s var(--ease-out-expo), transform .35s var(--ease-out-expo); }
   .shadow-paper:hover { box-shadow: 0 24px 50px -28px hsl(var(--ink) / 0.45), 0 0 0 1px hsl(var(--crimson) / 0.15); transform: translateY(-3px); }
   .shadow-elevated { box-shadow: var(--shadow-elevated); }

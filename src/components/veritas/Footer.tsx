@@ -49,7 +49,7 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-[1.4fr_2fr]">
           <div>
             <Link to="/" className="inline-flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-cream text-ink shadow-glow">
+              <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-cream text-foreground shadow-glow">
                 <ScanSearch className="h-4 w-4" />
               </div>
               <span className="font-display text-2xl font-black tracking-tight">
@@ -135,7 +135,7 @@ export function Footer() {
             />
             <button
               type="submit"
-              className="group h-11 rounded-sm bg-cream px-5 font-mono text-[11px] uppercase tracking-[0.2em] text-ink transition-all hover:bg-crimson-glow hover:text-cream hover:shadow-glow"
+              className="group h-11 rounded-sm bg-cream px-5 font-mono text-[11px] uppercase tracking-[0.2em] text-foreground transition-all hover:bg-crimson-glow hover:text-cream hover:shadow-glow"
             >
               Subscribe →
             </button>
