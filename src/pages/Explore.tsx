@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Beaker } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/veritas/Navbar";
+import { Footer } from "@/components/veritas/Footer";
 
 const CASES = [
   {
@@ -101,6 +102,7 @@ export default function Explore() {
           ))}
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

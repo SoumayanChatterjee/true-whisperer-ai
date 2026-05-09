@@ -15,6 +15,7 @@ import {
   Quote,
 } from "lucide-react";
 import { Navbar } from "@/components/veritas/Navbar";
+import { Footer } from "@/components/veritas/Footer";
 import { Link } from "react-router-dom";
 
 const PILLARS = [
@@ -270,6 +271,7 @@ export default function About() {
           </div>
         </motion.div>
       </section>
+      <Footer />
     </main>
   );
 }
