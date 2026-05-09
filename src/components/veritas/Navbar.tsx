@@ -69,8 +69,8 @@ export function Navbar() {
         className={cn(
           "relative border-b transition-all duration-300",
           scrolled
-            ? "border-border bg-paper/80 backdrop-blur-xl shadow-paper"
-            : "border-transparent bg-paper/50 backdrop-blur-md",
+            ? "border-border bg-background/80 backdrop-blur-xl shadow-paper"
+            : "border-transparent bg-background/50 backdrop-blur-md",
         )}
       >
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-crimson-glow/70 to-transparent" />
@@ -85,7 +85,7 @@ export function Navbar() {
               <span className="absolute -bottom-1 -right-1 h-2 w-2 animate-pulse rounded-full bg-crimson-glow shadow-[0_0_8px_hsl(var(--crimson-glow))]" />
             </div>
             <div className="flex flex-col leading-none">
-              <span className="font-display text-xl font-black tracking-tight text-ink">
+              <span className="font-display text-xl font-black tracking-tight text-foreground">
                 Verit<span className="text-gradient">as</span>
               </span>
               <span className="mt-0.5 font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground">
@@ -106,7 +106,7 @@ export function Navbar() {
                       "group relative flex items-center gap-1.5 rounded-sm px-3 py-2 font-mono text-[11px] uppercase tracking-[0.2em] transition-all",
                       isActive
                         ? "bg-ink text-cream shadow-glow"
-                        : "text-muted-foreground hover:bg-secondary hover:text-ink",
+                        : "text-muted-foreground hover:bg-secondary hover:text-foreground",
                     )
                   }
                 >
@@ -138,7 +138,7 @@ export function Navbar() {
           {/* Mobile toggle */}
           <button
             onClick={() => setOpen((v) => !v)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-sm border border-border bg-card text-ink transition-colors hover:bg-ink hover:text-cream md:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-sm border border-border bg-card text-foreground transition-colors hover:bg-ink hover:text-cream md:hidden"
             aria-label="Toggle menu"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -152,7 +152,7 @@ export function Navbar() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="overflow-hidden border-t border-border bg-paper md:hidden"
+              className="overflow-hidden border-t border-border bg-background md:hidden"
             >
               <ul className="flex flex-col p-3">
                 {links.map((l) => (
@@ -163,7 +163,7 @@ export function Navbar() {
                       className={({ isActive }) =>
                         cn(
                           "flex items-center justify-between rounded-sm px-3 py-2.5 font-mono text-xs uppercase tracking-[0.2em] transition-colors",
-                          isActive ? "bg-ink text-cream" : "text-ink hover:bg-secondary",
+                          isActive ? "bg-ink text-cream" : "text-foreground hover:bg-secondary",
                         )
                       }
                     >

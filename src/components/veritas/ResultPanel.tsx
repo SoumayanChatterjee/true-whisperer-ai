@@ -86,7 +86,7 @@ function ScoreRing({ score }: { score: number }) {
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
-          className="font-display text-5xl font-black text-ink">
+          className="font-display text-5xl font-black text-foreground">
           {Math.round(score)}
         </motion.span>
         <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">/ 100</span>
@@ -124,7 +124,7 @@ function SignalBar({
               />
             )}
           </span>
-          <span className="font-display text-sm font-bold text-ink">{Math.round(value)}</span>
+          <span className="font-display text-sm font-bold text-foreground">{Math.round(value)}</span>
         </div>
         <div className="h-1.5 overflow-hidden rounded-full bg-secondary">
           <motion.div
@@ -145,9 +145,9 @@ function SignalBar({
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <div className="mt-3 rounded-md border border-border bg-paper/60 p-3">
+            <div className="mt-3 rounded-md border border-border bg-background/60 p-3">
               {explanation!.rationale && (
-                <p className="flex gap-2 text-xs leading-relaxed text-ink">
+                <p className="flex gap-2 text-xs leading-relaxed text-foreground">
                   <Info className="mt-0.5 h-3 w-3 shrink-0 text-crimson" />
                   <span>{explanation!.rationale}</span>
                 </p>
@@ -256,7 +256,7 @@ export function ResultPanel({
             <h5 className="mb-2 flex items-center gap-2 font-display text-sm font-bold text-danger">
               <XCircle className="h-4 w-4" /> Red flags
             </h5>
-            <ul className="space-y-1.5 text-sm text-ink">
+            <ul className="space-y-1.5 text-sm text-foreground">
               {analysis.red_flags.map((f, i) => (
                 <li key={i} className="flex gap-2"><span className="text-danger">·</span>{f}</li>
               ))}
@@ -268,7 +268,7 @@ export function ResultPanel({
             <h5 className="mb-2 flex items-center gap-2 font-display text-sm font-bold text-success">
               <CheckCircle2 className="h-4 w-4" /> Credibility signals
             </h5>
-            <ul className="space-y-1.5 text-sm text-ink">
+            <ul className="space-y-1.5 text-sm text-foreground">
               {analysis.green_flags.map((f, i) => (
                 <li key={i} className="flex gap-2"><span className="text-success">·</span>{f}</li>
               ))}
@@ -304,12 +304,12 @@ export function ResultPanel({
                   >
                     <div className="mb-2 flex items-center gap-2">
                       <I className={`h-4 w-4 ${empty ? "text-muted-foreground" : "text-danger"}`} />
-                      <span className="font-display text-sm font-bold text-ink">{b.label}</span>
+                      <span className="font-display text-sm font-bold text-foreground">{b.label}</span>
                     </div>
                     {empty ? (
                       <p className="text-xs text-muted-foreground">No notable issues detected.</p>
                     ) : (
-                      <ul className="space-y-1.5 text-sm text-ink">
+                      <ul className="space-y-1.5 text-sm text-foreground">
                         {b.items.map((x, j) => (
                           <li key={j} className="flex gap-2"><span className="text-danger">·</span>{x}</li>
                         ))}
@@ -330,9 +330,9 @@ export function ResultPanel({
           </h4>
           <div className="grid gap-6 md:grid-cols-2">
             {/* Political bias slider */}
-            <div className="rounded-md border border-border bg-paper p-5">
+            <div className="rounded-md border border-border bg-background p-5">
               <div className="mb-1 flex items-baseline justify-between">
-                <span className="font-display text-sm font-bold text-ink">Political bias</span>
+                <span className="font-display text-sm font-bold text-foreground">Political bias</span>
                 <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                   {analysis.bias_tone.political_label.replace(/_/g, " ")}
                 </span>
@@ -352,9 +352,9 @@ export function ResultPanel({
             </div>
 
             {/* Emotional tone */}
-            <div className="rounded-md border border-border bg-paper p-5">
+            <div className="rounded-md border border-border bg-background p-5">
               <div className="mb-3 flex items-baseline justify-between">
-                <span className="font-display text-sm font-bold text-ink">Emotional tone</span>
+                <span className="font-display text-sm font-bold text-foreground">Emotional tone</span>
                 <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-crimson">
                   <Flame className="h-3 w-3" />
                   {analysis.bias_tone.emotional_tone}
@@ -374,7 +374,7 @@ export function ResultPanel({
               </div>
               <div className="mt-3 flex items-baseline justify-between">
                 <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Intensity</span>
-                <span className="font-display text-2xl font-black text-ink">{Math.round(analysis.bias_tone.tone_intensity)}</span>
+                <span className="font-display text-2xl font-black text-foreground">{Math.round(analysis.bias_tone.tone_intensity)}</span>
               </div>
             </div>
           </div>
@@ -428,7 +428,7 @@ export function ResultPanel({
                 />
               </div>
             </div>
-            <span className="font-display text-2xl font-black text-ink">{Math.round(mismatch.score)}</span>
+            <span className="font-display text-2xl font-black text-foreground">{Math.round(mismatch.score)}</span>
           </div>
           <p className="mt-3 text-sm text-muted-foreground">{mismatch.explanation}</p>
         </section>
@@ -440,11 +440,11 @@ export function ResultPanel({
           <h4 className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
             Loaded language in your text
           </h4>
-          <div className="rounded-md border border-border bg-paper p-4">
+          <div className="rounded-md border border-border bg-background p-4">
             <HighlightedText
               text={originalText.slice(0, 1200) + (originalText.length > 1200 ? "…" : "")}
               suspicious={suspicious}
-              className="font-display text-base leading-relaxed text-ink"
+              className="font-display text-base leading-relaxed text-foreground"
             />
           </div>
         </section>
@@ -469,11 +469,11 @@ export function ResultPanel({
             >
               <div className="rounded-md border border-danger/30 bg-danger/5 p-4">
                 <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-danger">Original</div>
-                <p className="text-sm leading-relaxed text-ink">{originalText.slice(0, 800)}{originalText.length > 800 ? "…" : ""}</p>
+                <p className="text-sm leading-relaxed text-foreground">{originalText.slice(0, 800)}{originalText.length > 800 ? "…" : ""}</p>
               </div>
               <div className="rounded-md border border-success/30 bg-success/5 p-4">
                 <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-success">Neutral rewrite</div>
-                <p className="text-sm leading-relaxed text-ink">{analysis.rewritten_neutral}</p>
+                <p className="text-sm leading-relaxed text-foreground">{analysis.rewritten_neutral}</p>
               </div>
             </motion.div>
           )}
@@ -499,7 +499,7 @@ export function ResultPanel({
               <li key={i} className="flex gap-3 border-l-2 border-ink/10 pl-4">
                 <Quote className="mt-1 h-4 w-4 shrink-0 text-crimson" />
                 <div className="flex-1">
-                  <p className="font-display text-base text-ink leading-snug">{c.claim}</p>
+                  <p className="font-display text-base text-foreground leading-snug">{c.claim}</p>
                   <span className={`mt-1 inline-block font-mono text-[10px] uppercase tracking-widest ${
                     c.verifiability === "verifiable" ? "text-success" :
                     c.verifiability === "partially_verifiable" ? "text-warning" : "text-danger"
@@ -519,7 +519,7 @@ export function ResultPanel({
           <h4 className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
             <Lightbulb className="h-3 w-3" /> Verify further
           </h4>
-          <ul className="space-y-2 text-sm text-ink">
+          <ul className="space-y-2 text-sm text-foreground">
             {analysis.recommendations.map((r, i) => (
               <li key={i} className="flex gap-2"><span className="text-crimson">→</span>{r}</li>
             ))}

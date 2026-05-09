@@ -26,13 +26,13 @@ export function TruthTimeline({
             transition={{ delay: 0.1 * i, duration: 0.5 }}
             className="relative"
           >
-            <span className="absolute -left-[34px] flex h-7 w-7 items-center justify-center rounded-full border border-border bg-paper shadow-paper">
+            <span className="absolute -left-[34px] flex h-7 w-7 items-center justify-center rounded-full border border-border bg-background shadow-paper">
               <Icon className={`h-3.5 w-3.5 ${meta.color}`} />
             </span>
             <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
               Stage {i + 1} · {meta.label}
             </div>
-            <h5 className="mt-1 font-display text-lg font-bold text-ink">{it.title}</h5>
+            <h5 className="mt-1 font-display text-lg font-bold text-foreground">{it.title}</h5>
             <p className="mt-1 text-sm text-muted-foreground">{it.description}</p>
           </motion.li>
         );

@@ -53,7 +53,7 @@ export default function RewriteLab() {
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground pulse-glow">
             <Wand2 className="h-3 w-3 text-crimson animate-pulse" /> Rewrite lab
           </div>
-          <h1 className="mt-3 font-display text-4xl font-black text-ink md:text-5xl">
+          <h1 className="mt-3 font-display text-4xl font-black text-foreground md:text-5xl">
             Rewrite to <span className="text-gradient">Truth</span>
           </h1>
           <p className="mt-2 max-w-2xl text-muted-foreground">
@@ -65,7 +65,7 @@ export default function RewriteLab() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glow-ring rounded-md border border-border bg-paper p-6 shadow-elevated"
+          className="glow-ring rounded-md border border-border bg-background p-6 shadow-elevated"
         >
           <label className="mb-2 block font-mono text-xs uppercase tracking-widest text-muted-foreground">
             Source text
@@ -110,7 +110,7 @@ export default function RewriteLab() {
                   <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-danger">
                     <FileText className="h-3 w-3" /> Original — manipulative
                   </div>
-                  <p className="mt-3 whitespace-pre-wrap font-display text-base leading-relaxed text-ink">
+                  <p className="mt-3 whitespace-pre-wrap font-display text-base leading-relaxed text-foreground">
                     {original}
                   </p>
                 </div>
@@ -120,7 +120,7 @@ export default function RewriteLab() {
                 <motion.div
                   animate={{ x: [0, 6, 0] }}
                   transition={{ duration: 1.6, repeat: Infinity }}
-                  className="rounded-full border border-border bg-paper p-2 shadow-glow"
+                  className="rounded-full border border-border bg-background p-2 shadow-glow"
                 >
                   <ArrowRight className="h-5 w-5 text-crimson" />
                 </motion.div>
@@ -142,7 +142,7 @@ export default function RewriteLab() {
                       {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                     </Button>
                   </div>
-                  <p className="mt-3 whitespace-pre-wrap font-display text-base leading-relaxed text-ink">
+                  <p className="mt-3 whitespace-pre-wrap font-display text-base leading-relaxed text-foreground">
                     {rewritten || (loading ? "…" : "")}
                   </p>
                 </div>

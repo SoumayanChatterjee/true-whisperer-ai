@@ -66,7 +66,7 @@ export default function Explore() {
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground pulse-glow">
             <Beaker className="h-3 w-3 text-crimson animate-pulse" /> Demo gallery
           </div>
-          <h1 className="mt-3 font-display text-4xl font-black text-ink md:text-5xl">
+          <h1 className="mt-3 font-display text-4xl font-black text-foreground md:text-5xl">
             Expl<span className="text-gradient">ore</span>
           </h1>
           <p className="mt-2 max-w-2xl text-muted-foreground">
@@ -87,7 +87,7 @@ export default function Explore() {
               <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-crimson-glow/10 blur-2xl transition-all group-hover:bg-crimson-glow/25" />
               <div className="relative flex flex-1 flex-col">
                 <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">{c.tag}</span>
-                <h3 className="mt-2 font-display text-lg font-bold text-ink leading-snug">{c.title}</h3>
+                <h3 className="mt-2 font-display text-lg font-bold text-foreground leading-snug">{c.title}</h3>
                 <p className="mt-3 line-clamp-4 text-sm text-muted-foreground">{c.body}</p>
                 <Button
                   onClick={() => tryCase(c.body)}

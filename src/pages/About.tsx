@@ -102,7 +102,7 @@ export default function About() {
           className="relative rounded-md border border-border bg-card p-8 shadow-paper md:p-12"
         >
           <Quote className="absolute -top-5 left-8 h-10 w-10 rounded-sm bg-ink p-2 text-cream shadow-glow" />
-          <blockquote className="font-display text-2xl italic leading-snug text-ink md:text-3xl">
+          <blockquote className="font-display text-2xl italic leading-snug text-foreground md:text-3xl">
             "A lie can travel halfway around the world while the truth is still putting on its shoes."
           </blockquote>
           <figcaption className="mt-4 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
@@ -113,7 +113,7 @@ export default function About() {
 
       {/* PILLARS — values */}
       <section className="mx-auto max-w-5xl px-6 pb-8">
-        <h2 className="font-display text-3xl font-black text-ink md:text-4xl">
+        <h2 className="font-display text-3xl font-black text-foreground md:text-4xl">
           What we <span className="text-gradient">stand for</span>
         </h2>
         <p className="mt-3 max-w-2xl text-muted-foreground">
@@ -134,7 +134,7 @@ export default function About() {
                 <div className="grid h-11 w-11 place-items-center rounded-sm bg-ink text-cream shadow-glow transition-transform group-hover:rotate-6 group-hover:scale-110">
                   <p.icon className="h-5 w-5" />
                 </div>
-                <h3 className="mt-4 font-display text-xl font-bold text-ink">{p.title}</h3>
+                <h3 className="mt-4 font-display text-xl font-bold text-foreground">{p.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
               </div>
             </motion.div>
@@ -148,7 +148,7 @@ export default function About() {
           <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
             <div>
               <div className="font-mono text-[10px] uppercase tracking-widest text-crimson">The stakes</div>
-              <h2 className="mt-1 font-display text-3xl font-black text-ink md:text-4xl">
+              <h2 className="mt-1 font-display text-3xl font-black text-foreground md:text-4xl">
                 Why this <span className="text-gradient">matters</span>
               </h2>
             </div>
@@ -165,11 +165,11 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="group relative overflow-hidden rounded-sm border border-border/60 bg-paper p-5"
+                className="group relative overflow-hidden rounded-sm border border-border/60 bg-background p-5"
               >
                 <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-crimson to-transparent opacity-60" />
                 <h.icon className="h-5 w-5 text-crimson" />
-                <h3 className="mt-3 font-display text-lg font-bold text-ink">{h.title}</h3>
+                <h3 className="mt-3 font-display text-lg font-bold text-foreground">{h.title}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{h.body}</p>
               </motion.div>
             ))}
@@ -179,7 +179,7 @@ export default function About() {
 
       {/* PIPELINE — kept, condensed */}
       <section className="mx-auto max-w-5xl px-6 pb-16">
-        <h2 className="font-display text-3xl font-black text-ink">
+        <h2 className="font-display text-3xl font-black text-foreground">
           How it <span className="text-gradient">works</span>
         </h2>
         <p className="mt-3 max-w-2xl text-muted-foreground">
@@ -205,7 +205,7 @@ export default function About() {
                     Step {String(i + 1).padStart(2, "0")}
                   </div>
                 </div>
-                <h3 className="mt-3 font-display text-xl font-bold text-ink">{s.title}</h3>
+                <h3 className="mt-3 font-display text-xl font-bold text-foreground">{s.title}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{s.body}</p>
               </div>
             </motion.div>
@@ -217,7 +217,7 @@ export default function About() {
       <section className="mx-auto max-w-5xl px-6 pb-16">
         <div className="grid gap-8 rounded-md border border-border bg-card p-8 md:grid-cols-2">
           <div>
-            <h3 className="font-display text-2xl font-bold text-ink">Limits & humility</h3>
+            <h3 className="font-display text-2xl font-bold text-foreground">Limits & humility</h3>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li>· Veritas is an <em>assistant</em>, not an oracle. Always verify with primary sources.</li>
               <li>· Scores reflect linguistic and structural signals, not ground-truth fact-checking.</li>
@@ -226,7 +226,7 @@ export default function About() {
             </ul>
           </div>
           <div>
-            <h3 className="font-display text-2xl font-bold text-ink">Built with</h3>
+            <h3 className="font-display text-2xl font-bold text-foreground">Built with</h3>
             <ul className="mt-4 space-y-2 font-mono text-xs text-muted-foreground">
               <li>· React + Vite + Tailwind</li>
               <li>· Recharts for radar and stats</li>
@@ -257,7 +257,7 @@ export default function About() {
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <Link
                 to="/"
-                className="inline-flex items-center gap-2 rounded-sm bg-cream px-5 py-3 font-mono text-xs uppercase tracking-widest text-ink shadow-glow transition-transform hover:scale-[1.03]"
+                className="inline-flex items-center gap-2 rounded-sm bg-cream px-5 py-3 font-mono text-xs uppercase tracking-widest text-foreground shadow-glow transition-transform hover:scale-[1.03]"
               >
                 Analyse a story
               </Link>
