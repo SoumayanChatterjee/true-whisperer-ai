@@ -215,17 +215,21 @@ const Index = () => {
       </section>
 
       {/* ANALYZER */}
-      <section className="relative -mt-20 px-4 pb-24 md:px-6">
+      <section className="relative -mt-16 px-4 pb-24 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="glow-ring mx-auto max-w-4xl rounded-md border border-border bg-background p-6 shadow-elevated md:p-10"
+          className="glow-ring glass-strong relative mx-auto max-w-4xl overflow-hidden rounded-md p-6 shadow-elevated md:p-10"
         >
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-electric to-transparent" />
           <div className="mb-6 flex items-baseline justify-between border-b border-border pb-4">
-            <h2 className="font-display text-2xl font-bold text-foreground md:text-3xl">Run an analysis</h2>
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-              v2 · Gemini · NLP pipeline
+            <div className="flex items-center gap-3">
+              <span className="grid h-8 w-8 place-items-center rounded-sm border border-electric/30 bg-electric/10 text-electric"><ScanSearch className="h-4 w-4" /></span>
+              <h2 className="font-display text-2xl font-bold text-foreground md:text-3xl">Run an analysis</h2>
+            </div>
+            <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground md:inline">
+              v2.4 · Gemini · NLP pipeline
             </span>
           </div>
 
