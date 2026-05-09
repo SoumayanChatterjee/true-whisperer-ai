@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Navbar } from "@/components/veritas/Navbar";
+import { Footer } from "@/components/veritas/Footer";
 import { toast } from "sonner";
 
 export default function RewriteLab() {
@@ -150,6 +151,7 @@ export default function RewriteLab() {
           )}
         </AnimatePresence>
       </section>
+      <Footer />
     </main>
   );
 }

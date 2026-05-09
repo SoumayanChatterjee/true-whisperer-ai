@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { TrendingUp, Flame, AlertTriangle, Activity } from "lucide-react";
 import { Navbar } from "@/components/veritas/Navbar";
+import { Footer } from "@/components/veritas/Footer";
 import {
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid,
   BarChart, Bar, Legend,
@@ -148,6 +149,7 @@ export default function Trends() {
           ))}
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

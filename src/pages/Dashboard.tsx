@@ -8,6 +8,7 @@ import {
 } from "recharts";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/veritas/Navbar";
+import { Footer } from "@/components/veritas/Footer";
 import { clearHistory, loadHistory, verdictBucket, type HistoryEntry } from "@/lib/history";
 
 const COLORS = {
@@ -194,6 +195,7 @@ export default function Dashboard() {
           </>
         )}
       </section>
+      <Footer />
     </main>
   );
 }
